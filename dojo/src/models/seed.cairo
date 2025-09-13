@@ -5,8 +5,6 @@ use aster::utils::hash::{make_seed};
 #[derive(Copy, Drop, Serde)]
 pub struct Seed {
     #[key]
-    pub contract_address: ContractAddress,
-    #[key]
     pub token_id: u128,
     pub seed: felt252,
 }
@@ -19,7 +17,7 @@ pub struct Seed {
 pub impl SeedImpl of SeedTrait {
     fn new(contract_address: ContractAddress, token_id: u128) -> Seed {
         let seed: felt252 = make_seed(contract_address, token_id);
-        (Seed { contract_address, token_id, seed })
+        (Seed { token_id, seed })
     }
 }
 

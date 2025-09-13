@@ -106,7 +106,6 @@ pub mod tester {
         };
 
         let strk_address = sys.coin.contract_address.into();
-        let presale_token_address = world.find_contract_address(@"mock_token");
 
         let mut contract_defs: Array<ContractDef> = array![
             ContractDefTrait::new(@"aster", @"token")
@@ -119,7 +118,6 @@ pub mod tester {
                 .with_init_calldata([
                     TREASURY().into(),
                     (if strk_address.is_non_zero() {strk_address} else {XYZ()}).into(),
-                    (if presale_token_address.is_non_zero() {presale_token_address} else {XYZ()}).into(),
                 ].span()),
         ];
 

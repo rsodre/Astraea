@@ -119,12 +119,12 @@ pub mod token {
     // ERC721 end
     //-----------------------------------
 
-    use aster::models::token_config::{TokenConfig, TokenConfigTrait};
+    // use aster::models::token_config::{TokenConfig, TokenConfigTrait};
     use aster::models::seed::{Seed, SeedTrait};
     use aster::models::gen2::props::{Gen2Props, Gen2PropsTrait};
     use aster::systems::renderer::{Gen2RendererTrait};
     use aster::libs::store::{Store, StoreTrait};
-    use aster::libs::dns::{SELECTORS};
+    use aster::libs::dns::{DnsTrait, SELECTORS};
     use aster::models::gen2::{constants};
 
     mod Errors {
@@ -142,9 +142,9 @@ pub mod token {
             Option::None, // use hooks
             Option::Some(constants::MAX_SUPPLY),
         );
-        self.erc721_combo._set_reserved_supply(12);
+        // self.erc721_combo._set_reserved_supply(3);
         self.erc721_combo._set_default_royalty(treasury_address, constants::DEFAULT_ROYALTY);
-        // self.erc721_combo._set_minting_paused(true); // no need, using presale state
+        // self.erc721_combo._set_minting_paused(true);
     }
 
     #[generate_trait]
@@ -180,18 +180,13 @@ pub mod token {
         }
 
         fn burn(ref self: ContractState, token_id: u256) {
+            panic!("Don't burn flowers!");
             // let owner: ContractAddress = self.owner_of(token_id);
             // self.erc721_combo._burn(token_id);
             // // event...
             // let mut store: Store = StoreTrait::new(self.world_default());
             // store.emit_token_burned_event(starknet::get_contract_address(), token_id.low, owner);
         }
-
-        // fn get_token_props(self: @ContractState, token_id: u128) -> Gen2Props {
-        //     let mut store: Store = StoreTrait::new(self.world_default());
-        //     let seed: Seed = store.get_seed(starknet::get_contract_address(), token_id);
-        //     (seed.generate_props())
-        // }
 
         fn get_token_svg(ref self: ContractState, token_id: u128) -> ByteArray {
             let mut store: Store = StoreTrait::new(self.world_default());
@@ -203,8 +198,7 @@ pub mod token {
         // admin
         //
         fn set_paused(ref self: ContractState, is_paused: bool) {
-            let mut store: Store = StoreTrait::new(self.world_default());
-            self._assert_caller_is_minter(@store);
+            self._assert_caller_is_owner();
             self.erc721_combo._set_minting_paused(is_paused);
         }
         fn set_reserved_supply(ref self: ContractState, reserved_supply: u256) {
@@ -241,9 +235,7 @@ pub mod token {
         }
         #[inline(always)]
         fn _assert_caller_is_minter(self: @ContractState, store: @Store) {
-            let token_contract_address: ContractAddress = starknet::get_contract_address();
-            let config: TokenConfig = store.get_token_config(token_contract_address);
-            assert(config.is_minter(starknet::get_caller_address()), Errors::CALLER_IS_NOT_MINTER);
+            assert(store.world.minter_address() == starknet::get_caller_address(), Errors::CALLER_IS_NOT_MINTER);
         }
     }
 

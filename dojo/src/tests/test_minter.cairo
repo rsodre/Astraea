@@ -23,16 +23,6 @@ mod tests {
         mock_coin::{ICoinMockDispatcherTrait},
     };
 
-    fn _start_presale(sys: TestSystems) {
-        tester::impersonate(OWNER());
-        sys.minter.set_paused(sys.token.contract_address, false);
-    }
-    fn _end_presale(sys: TestSystems) {
-        tester::impersonate(OWNER());
-        let timestamp: u64 = sys.store.get_token_config(sys.token.contract_address).presale_timestamp_end;
-        tester::set_block_timestamp(timestamp + 1);
-    }
-
     fn _approve(sys: TestSystems, account: ContractAddress, quantity: u128) -> u256 {
         let (purchase_coin_address, purchase_price) = sys.minter.get_price(sys.token.contract_address);
         assert_eq!(purchase_coin_address, sys.coin.contract_address, "purchase_coin_address");
@@ -131,76 +121,34 @@ mod tests {
     fn test_mint_ok() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
         assert_eq!(sys.token.total_supply(), 0, "supply = 0");
-        // release...
-        assert_eq!(sys.minter.get_presale_countdown(sys.token.contract_address), Option::None, "presale_none");
-        tester::impersonate(OTHER());
-        _assert_cannot_mint(sys, "Unavailable");
-        _start_presale(sys);
-        assert_eq!(sys.minter.get_presale_countdown(sys.token.contract_address).unwrap(), CONST::ONE_DAY, "presale_ONE_DAY");
-        // approve...
-        tester::impersonate(OTHER());
-        _assert_cannot_mint(sys, "Insufficient balance");
-        _approve(sys, OTHER(), 2);
         // mint...
         tester::impersonate(OTHER());
-        _assert_can_mint(sys, "presale");
         let token_id_1: u128 = sys.minter.mint(sys.token.contract_address);
-        _assert_cannot_mint(sys, "Already minted");
+        _assert_can_mint(sys, "first mint");
         // minted...
         let seed_1: felt252 = _assert_minted(sys, token_id_1, 1, OTHER(), "TOKEN_1");
-        // not whitelisted
-        tester::impersonate(BUMMER());
-        _assert_cannot_mint(sys, "Ineligible");
-        //
-        // elapse some time...
-        tester::elapse_block_timestamp(CONST::ONE_DAY - 1000);
-        assert_eq!(sys.minter.get_presale_countdown(sys.token.contract_address).unwrap(), 1000, "presale_1000");
-        _assert_cannot_mint(sys, "Ineligible");
-        tester::elapse_block_timestamp(999);
-        assert_eq!(sys.minter.get_presale_countdown(sys.token.contract_address).unwrap(), 1, "presale_1");
-        _assert_cannot_mint(sys, "Ineligible");
-        //
-        // after presale...
-        _end_presale(sys);
-        assert_eq!(sys.minter.get_presale_countdown(sys.token.contract_address).unwrap(), 0, "presale_ended");
-        tester::impersonate(BUMMER());
-        _assert_cannot_mint(sys, "Insufficient balance");
-        _approve(sys, BUMMER(), 2);
-        _assert_can_mint(sys, "post-presale");
-        // mint...
-        tester::impersonate(BUMMER());
-        let token_id_2: u128 = sys.minter.mint(sys.token.contract_address);
-        _assert_can_mint(sys, "could mint again 1");
-        // minted...
-        let seed_2: felt252 = _assert_minted(sys, token_id_2, 2, BUMMER(), "TOKEN_2");
-        assert_ne!(seed_2, seed_1, "seed_2_1");
         //
         // mint to... 
         tester::impersonate(OTHER());
         _assert_can_mint(sys, "mint_to");
-        let token_id_3: u128 = sys.minter.mint_to(sys.token.contract_address, BUMMER());
-        _assert_can_mint(sys, "could mint again 2");
+        let token_id_2: u128 = sys.minter.mint_to(sys.token.contract_address, BUMMER());
+        _assert_can_mint(sys, "second mint");
         // minted...
-        let seed_3: felt252 = _assert_minted(sys, token_id_3, 3, BUMMER(), "TOKEN_3");
-        assert_ne!(seed_3, seed_1, "seed_3_1");
-        assert_ne!(seed_3, seed_2, "seed_3_2");
+        let seed_2: felt252 = _assert_minted(sys, token_id_2, 2, BUMMER(), "TOKEN_2");
+        assert_ne!(seed_2, seed_1, "seed_2_1");
     }
 
     #[test]
     fn test_purchase_balance() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
-        _start_presale(sys);
         // approve...
         tester::impersonate(OTHER());
-        let amount_approved: u256 = _approve(sys, OTHER(), 4);
+        let amount_approved: u256 = _approve(sys, OTHER(), 3);
         let balance_other: u256 = sys.coin.balance_of(OTHER());
         assert_gt!(amount_approved, 0, "amount_approved_BEFORE");
         assert_gt!(balance_other, amount_approved, "balance_other_BEFORE");
         assert_eq!(sys.coin.balance_of(TREASURY()), 0, "balance_treasury_BEFORE");
         // mint all...
-        tester::impersonate(OTHER());
-        sys.minter.mint(sys.token.contract_address);
-        _end_presale(sys);
         tester::impersonate(OTHER());
         sys.minter.mint(sys.token.contract_address);
         sys.minter.mint_to(sys.token.contract_address, SPENDER());
@@ -220,82 +168,9 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('MINTER: ineligible to presale','ENTRYPOINT_FAILED'))]
-    fn test_mint_presale_ineligible() {
-        let sys: TestSystems = tester::setup_world(FLAGS::NONE);
-        _start_presale(sys);
-        tester::impersonate(BUMMER());
-        _assert_cannot_mint(sys, "Ineligible");
-        sys.minter.mint(sys.token.contract_address);
-    }
-
-    #[test]
-    #[should_panic(expected:('MINTER: insufficient balance','ENTRYPOINT_FAILED'))]
-    fn test_mint_presale_insufficient_balance() {
-        let sys: TestSystems = tester::setup_world(FLAGS::NONE);
-        _start_presale(sys);
-        tester::impersonate(OTHER());
-        _assert_cannot_mint(sys, "Insufficient balance");
-        sys.minter.mint(sys.token.contract_address);
-    }
-
-    #[test]
-    #[should_panic(expected:('MINTER: insufficient allowance','ENTRYPOINT_FAILED'))]
-    fn test_mint_presale_insufficient_allowance() {
-        let sys: TestSystems = tester::setup_world(FLAGS::NONE);
-        _start_presale(sys);
-        tester::impersonate(OTHER());
-        sys.coin.faucet();
-        _assert_can_mint(sys, "mint");
-        sys.minter.mint(sys.token.contract_address);
-    }
-
-    #[test]
-    #[should_panic(expected:('MINTER: already minted presale','ENTRYPOINT_FAILED'))]
-    fn test_mint_presale_already_minted() {
-        let sys: TestSystems = tester::setup_world(FLAGS::NONE);
-        _start_presale(sys);
-        tester::impersonate(OTHER());
-        _approve(sys, OTHER(), 1);
-        sys.minter.mint(sys.token.contract_address);
-        _assert_cannot_mint(sys, "Already minted");
-        sys.minter.mint(sys.token.contract_address);
-    }
-
-    #[test]
-    #[should_panic(expected:('MINTER: presale to other','ENTRYPOINT_FAILED'))]
-    fn test_presale_mint_to_not_allowed() {
-        let sys: TestSystems = tester::setup_world(FLAGS::NONE);
-        _start_presale(sys);
-        _approve(sys, OTHER(), 2);
-        // mint...
-        tester::impersonate(OTHER());
-        _assert_can_mint(sys, "mint");
-        sys.minter.mint_to(sys.token.contract_address, BUMMER());
-    }
-
-    #[test]
-    #[should_panic(expected:('MINTER: minting is paused','ENTRYPOINT_FAILED'))]
-    fn test_presale_mint_paused() {
-        let sys: TestSystems = tester::setup_world(FLAGS::NONE);
-        _start_presale(sys);
-        // pause
-        assert!(!sys.token.is_minting_paused(), "paused:START");
-        tester::impersonate(OWNER());
-        sys.minter.set_paused(sys.token.contract_address, true);
-        assert!(sys.token.is_minting_paused(), "paused:true");
-        // mint...
-        tester::impersonate(OTHER());
-        _assert_cannot_mint(sys, "Paused");
-        sys.minter.mint(sys.token.contract_address);
-    }
-
-    #[test]
     #[should_panic(expected:('MINTER: minting is paused','ENTRYPOINT_FAILED'))]
     fn test_mint_paused() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
-        _start_presale(sys);
-        _end_presale(sys);
         // pause
         assert!(!sys.token.is_minting_paused(), "paused:START");
         tester::impersonate(OWNER());
