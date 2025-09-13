@@ -131,7 +131,6 @@ mod unit {
     use aster::models::seed::{Seed};
     use aster::models::gen2::{palette::{Palette, PaletteTrait}};
     use aster::models::gen2::class::{Class, ClassTrait};
-    use aster::tests::tester::tester::{OWNER};
 
     fn _check_class(seed: Seed) {
         let props: Gen2Props = seed.generate_props();
@@ -151,7 +150,6 @@ mod unit {
         let mut seed_value: u256 = 12123123;
         seed_value.high = 9;
         let mut seed: Seed = Seed{
-            contract_address: OWNER(),
             token_id: 0,
             seed: seed_value.try_into().unwrap(),
         };

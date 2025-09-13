@@ -16,16 +16,19 @@ pub struct TokenConfig {
 // Traits
 //
 use aster::systems::token::{ITokenDispatcherTrait};
-use aster::libs::store::{Store};
+use aster::libs::store::{Store, StoreTrait};
 use aster::libs::dns::{DnsTrait};
 use aster::interfaces::ierc20::{IERC20Dispatcher};
 
 #[generate_trait]
 pub impl TokenConfigImpl of TokenConfigTrait {
-    fn account_can_mint(self: TokenConfig, store: @Store, account_address: ContractAddress) -> bool {
-        (store.world.token_dispatcher().balance_of(account_address) < self.max_per_wallet.into())
+    fn get(store: @Store) -> TokenConfig {
+        (store.get_token_config(store.world.token_address()))
     }
-    fn purchase_coin_dispatcher(self: TokenConfig) -> IERC20Dispatcher {
-        (IERC20Dispatcher{ contract_address: self.purchase_coin_address })
+    fn account_can_mint(self: @TokenConfig, store: @Store, account_address: ContractAddress) -> bool {
+        (store.world.token_dispatcher().balance_of(account_address) < (*self.max_per_wallet).into())
+    }
+    fn purchase_coin_dispatcher(self: @TokenConfig) -> IERC20Dispatcher {
+        (IERC20Dispatcher{ contract_address: *self.purchase_coin_address })
     }
 }

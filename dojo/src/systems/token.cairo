@@ -190,7 +190,7 @@ pub mod token {
 
         fn get_token_svg(ref self: ContractState, token_id: u128) -> ByteArray {
             let mut store: Store = StoreTrait::new(self.world_default());
-            let seed: Seed = store.get_seed(starknet::get_contract_address(), token_id);
+            let seed: Seed = store.get_seed(token_id);
             (Gen2RendererTrait::render_svg(@seed.generate_props()))
         }
 
@@ -263,7 +263,7 @@ pub mod token {
             let self = self.get_contract(); // get the component's contract state
             let mut store: Store = StoreTrait::new(self.world_default());
             // gather data
-            let seed: Seed = store.get_seed(starknet::get_contract_address(), token_id.low);
+            let seed: Seed = store.get_seed(token_id.low);
             let token_props: Gen2Props = seed.generate_props();
             let svg: ByteArray = Gen2RendererTrait::render_svg(@token_props);
             // return the metadata to be rendered by the component

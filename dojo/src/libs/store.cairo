@@ -31,8 +31,8 @@ pub impl StoreImpl of StoreTrait {
         (self.world.read_model(token_contract_address))
     }
     #[inline(always)]
-    fn get_seed(self: @Store, token_contract_address: ContractAddress, token_id: u128) -> Seed {
-        (self.world.read_model((token_contract_address, token_id),))
+    fn get_seed(self: @Store, token_id: u128) -> Seed {
+        (self.world.read_model(token_id))
     }
 
     //----------------------------------

@@ -2,13 +2,13 @@ use starknet::{ContractAddress};
 
 #[starknet::interface]
 pub trait IMinter<TState> {
-    fn get_price(self: @TState, token_contract_address: ContractAddress) -> (ContractAddress, u128);
-    fn can_mint(self: @TState, token_contract_address: ContractAddress, recipient: ContractAddress) -> Option<ByteArray>;
-    fn mint(ref self: TState, token_contract_address: ContractAddress) -> u128;
-    fn mint_to(ref self: TState, token_contract_address: ContractAddress, recipient: ContractAddress) -> u128;
+    fn get_price(self: @TState) -> (ContractAddress, u128);
+    fn can_mint(self: @TState, recipient: ContractAddress) -> Option<ByteArray>;
+    fn mint(ref self: TState) -> u128;
+    fn mint_to(ref self: TState, recipient: ContractAddress) -> u128;
 
     // admin
-    fn set_purchase_price(ref self: TState, token_contract_address: ContractAddress, purchase_coin_address: ContractAddress, purchase_price_eth: u8);
+    fn set_purchase_price(ref self: TState, purchase_coin_address: ContractAddress, purchase_price_eth: u8);
 }
 
 #[dojo::contract]
@@ -17,8 +17,7 @@ pub mod minter {
     use starknet::{ContractAddress};
     use dojo::world::{WorldStorage, IWorldDispatcherTrait};
 
-    use aster::systems::token::{ITokenDispatcher, ITokenDispatcherTrait};
-    // use aster::systems::renderer::{renderer};
+    use aster::systems::token::{ITokenDispatcherTrait};
     use aster::interfaces::ierc20::{IERC20Dispatcher, IERC20DispatcherTrait};
     use aster::libs::store::{Store, StoreTrait};
     use aster::libs::dns::{DnsTrait, SELECTORS};
@@ -33,9 +32,8 @@ pub mod minter {
         pub const CALLER_IS_NOT_OWNER: felt252      = 'MINTER: caller is not owner';
         pub const INVALID_TREASURY_ADDRESS: felt252 = 'MINTER: invalid treasury';
         pub const INVALID_COIN_ADDRESS: felt252     = 'MINTER: invalid coin address';
-        pub const INVALID_TOKEN_ADDRESS: felt252    = 'MINTER: invalid token address';
-        pub const UNAVAILABLE: felt252              = 'MINTER: unavailable';
-        pub const PAUSED: felt252                   = 'MINTER: minting is paused';
+        pub const MINTING_PAUSED: felt252           = 'MINTER: mint paused';
+        pub const MINTED_MAXIMUM: felt252           = 'MINTER: minted maximum';
         pub const INVALID_RECEIVER: felt252         = 'MINTER: invalid receiver';
         pub const INSUFFICIENT_ALLOWANCE: felt252   = 'MINTER: insufficient allowance';
         pub const INSUFFICIENT_BALANCE: felt252     = 'MINTER: insufficient balance';
@@ -76,16 +74,16 @@ pub mod minter {
     //
     #[abi(embed_v0)]
     impl MinterImpl of super::IMinter<ContractState> {
-        fn get_price(self: @ContractState, token_contract_address: ContractAddress) -> (ContractAddress, u128) {
+        fn get_price(self: @ContractState) -> (ContractAddress, u128) {
             let mut store: Store = StoreTrait::new(self.world_default());
-            let token_config: TokenConfig = store.get_token_config(token_contract_address);
+            let token_config: TokenConfig = TokenConfigTrait::get(@store);
             (token_config.purchase_coin_address, token_config.purchase_price_wei)
         }
 
-        fn can_mint(self: @ContractState, token_contract_address: ContractAddress, recipient: ContractAddress) -> Option<ByteArray> {
+        fn can_mint(self: @ContractState, recipient: ContractAddress) -> Option<ByteArray> {
             let mut store: Store = StoreTrait::new(self.world_default());
-            let token_config: TokenConfig = store.get_token_config(token_contract_address);
-            let token_dispatcher = ITokenDispatcher{contract_address:token_contract_address};
+            let token_config: TokenConfig = TokenConfigTrait::get(@store);
+            let token_dispatcher = store.world.token_dispatcher();
             if (token_dispatcher.is_minted_out()) {
                 (Option::Some("Minted out"))
             } else if (token_dispatcher.is_minting_paused()) {
@@ -103,15 +101,15 @@ pub mod minter {
         }
 
 
-        fn mint(ref self: ContractState, token_contract_address: ContractAddress) -> u128 {
-            (self.mint_to(token_contract_address, starknet::get_caller_address()))
+        fn mint(ref self: ContractState) -> u128 {
+            (self.mint_to(starknet::get_caller_address()))
         }
 
-        fn mint_to(ref self: ContractState, token_contract_address: ContractAddress, recipient: ContractAddress) -> u128 {
+        fn mint_to(ref self: ContractState, recipient: ContractAddress) -> u128 {
             // check availability
             let store: Store = StoreTrait::new(self.world_default());
-            let token_config: TokenConfig = store.get_token_config(token_contract_address);
-            let token_dispatcher = ITokenDispatcher{contract_address:token_contract_address};
+            let token_config: TokenConfig = TokenConfigTrait::get(@store);
+            let token_dispatcher = store.world.token_dispatcher();
             
             // check current minting rules...
             // (contract owner is always allowed to mint)
@@ -119,12 +117,8 @@ pub mod minter {
                 let caller: ContractAddress = starknet::get_caller_address();
 
                 // validate
-                match self.can_mint(token_contract_address, recipient) {
-                    Option::Some(error) => {
-                        panic!("MINTER: {}", error);
-                    },
-                    Option::None => {},
-                }
+                assert(!token_dispatcher.is_minting_paused(), Errors::MINTING_PAUSED);
+                assert(token_config.account_can_mint(@store, recipient), Errors::MINTED_MAXIMUM);
 
                 // charge!
                 if (token_config.purchase_price_wei != 0) {
@@ -151,14 +145,10 @@ pub mod minter {
         //---------------------------------------
         // admin
         //
-        fn set_purchase_price(ref self: ContractState,
-            token_contract_address: ContractAddress,
-            purchase_coin_address: ContractAddress,
-            purchase_price_eth: u8,
-        ) {
+        fn set_purchase_price(ref self: ContractState, purchase_coin_address: ContractAddress, purchase_price_eth: u8) {
             self._assert_caller_is_owner();
             let mut store: Store = StoreTrait::new(self.world_default());
-            let mut token_config: TokenConfig = store.get_token_config(token_contract_address);
+            let mut token_config: TokenConfig = TokenConfigTrait::get(@store);
             token_config.purchase_coin_address = purchase_coin_address;
             token_config.purchase_price_wei = WEI(purchase_price_eth.into());
             store.set_token_config(@token_config);
