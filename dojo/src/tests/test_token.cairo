@@ -3,7 +3,6 @@ mod tests {
     // use starknet::{ContractAddress};
     // use dojo::world::{IWorldDispatcher, IWorldDispatcherTrait};
 
-    // karat
     use aster::{
         systems::{token::{ITokenDispatcherTrait}},
         systems::{minter::{IMinterDispatcherTrait}},
@@ -29,7 +28,7 @@ mod tests {
 
     fn _set_seed(ref sys: TestSystems, token_id: u128, new_seed: felt252) {
         let mut store: Store = StoreTrait::new(sys.world);
-        let mut seed: Seed = store.get_seed(sys.token.contract_address, token_id);
+        let mut seed: Seed = store.get_seed(token_id);
         seed.seed = new_seed;
         tester::set_seed(ref sys.world, @seed);
     }
@@ -55,7 +54,7 @@ mod tests {
     fn test_token_uri() {
         let mut sys: TestSystems = tester::setup_world(FLAGS::UNPAUSE);
         tester::impersonate(OWNER());
-        sys.minter.mint(sys.token.contract_address);
+        sys.minter.mint();
 _set_seed(ref sys, 1, 0x05ffb53ecb1afe4b91ff5d2365207ed973f916afae1ebfaf73a90aa56c6368cb);
         let uri: ByteArray = sys.token.token_uri(1);
         let uri_camel = sys.token.tokenURI(1);
@@ -121,7 +120,7 @@ println!("___contract_uri():[{}]", uri);
     fn test_admin_set_paused() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
         assert!(!sys.token.is_minting_paused(), "paused:START");
-        tester::impersonate(sys.minter.contract_address);
+        tester::impersonate(OWNER());
         sys.token.set_paused(false);
         assert!(!sys.token.is_minting_paused(), "paused:false");
         sys.token.set_paused(true);
@@ -129,17 +128,17 @@ println!("___contract_uri():[{}]", uri);
     }
 
     #[test]
-    #[should_panic(expected:('KARAT: caller is not minter','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('ASTER: caller is not owner','ENTRYPOINT_FAILED'))]
     fn test_admin_set_paused_not_minter() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
-        tester::impersonate(OWNER());
+        tester::impersonate(OTHER());
         sys.token.set_paused(false);
     }
 
     #[test]
     fn test_admin_set_reserved_supply() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
-        assert_eq!(sys.token.reserved_supply(), 12, "reserved_supply:START");
+        assert_eq!(sys.token.reserved_supply(), 0, "reserved_supply:START");
         tester::impersonate(OWNER());
         sys.token.set_reserved_supply(10);
         assert_eq!(sys.token.reserved_supply(), 10, "reserved_supply:10");
@@ -149,7 +148,7 @@ println!("___contract_uri():[{}]", uri);
     }
 
     #[test]
-    #[should_panic(expected:('KARAT: caller is not owner','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('ASTER: caller is not owner','ENTRYPOINT_FAILED'))]
     fn test_admin_set_reserved_supply_not_owner() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
         tester::impersonate(OTHER());

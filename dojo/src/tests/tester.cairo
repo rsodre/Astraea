@@ -75,7 +75,7 @@ pub mod tester {
     }
 
     pub fn setup_world(flags: u8) -> TestSystems {
-        let unpause = (flags & FLAGS::UNPAUSE) != 0;
+        let _unpause = (flags & FLAGS::UNPAUSE) != 0;
         
         let mut resources: Array<TestResource> = array![
             // contracts
@@ -131,10 +131,6 @@ pub mod tester {
         world.dispatcher.grant_owner(selector_from_tag!("aster-token"), OWNER());
 
         impersonate(OWNER());
-
-        if (unpause) {
-            sys.minter.set_paused(sys.token.contract_address, false);
-        }
 
 // println!("READY!");
         (sys)

@@ -128,8 +128,8 @@ pub mod token {
     use aster::models::gen2::{constants};
 
     mod Errors {
-        pub const CALLER_IS_NOT_OWNER: felt252      = 'KARAT: caller is not owner';
-        pub const CALLER_IS_NOT_MINTER: felt252     = 'KARAT: caller is not minter';
+        pub const CALLER_IS_NOT_OWNER: felt252      = 'ASTER: caller is not owner';
+        pub const CALLER_IS_NOT_MINTER: felt252     = 'ASTER: caller is not minter';
     }
 
     fn dojo_init(ref self: ContractState,
@@ -142,8 +142,8 @@ pub mod token {
             Option::None, // use hooks
             Option::Some(constants::MAX_SUPPLY),
         );
-        // self.erc721_combo._set_reserved_supply(3);
         self.erc721_combo._set_default_royalty(treasury_address, constants::DEFAULT_ROYALTY);
+        // self.erc721_combo._set_reserved_supply(3);
         // self.erc721_combo._set_minting_paused(true);
     }
 
