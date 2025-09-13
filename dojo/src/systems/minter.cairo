@@ -59,6 +59,7 @@ pub mod minter {
             treasury_address,
             purchase_coin_address,
             purchase_price_wei: WEI(constants::DEFAULT_STRK_PRICE_ETH.into()),
+            max_per_wallet: constants::MAX_PER_WALLET,
         });
     }
 
@@ -89,9 +90,11 @@ pub mod minter {
                 (Option::Some("Minted out"))
             } else if (token_dispatcher.is_minting_paused()) {
                 (Option::Some("Paused"))
+            } else if (!token_config.account_can_mint(@store, recipient)) {
+                (Option::Some("Minted maximum"))
             } else if (token_dispatcher.available_supply() == 0) {
                 (Option::Some("Unavailable"))
-            } else if (token_config.purchase_coin_dispatcher().balance_of(recipient) < token_config.purchase_price_wei.into()) {
+            } else if (token_config.purchase_coin_dispatcher().balance_of(starknet::get_caller_address()) < token_config.purchase_price_wei.into()) {
                 (Option::Some("Insufficient balance"))
             } else {
                 // can mint!
@@ -115,8 +118,13 @@ pub mod minter {
             if (!self._caller_is_owner()) {
                 let caller: ContractAddress = starknet::get_caller_address();
 
-                // not released yet
-                assert(!token_dispatcher.is_minting_paused(), Errors::PAUSED);
+                // validate
+                match self.can_mint(token_contract_address, recipient) {
+                    Option::Some(error) => {
+                        panic!("MINTER: {}", error);
+                    },
+                    Option::None => {},
+                }
 
                 // charge!
                 if (token_config.purchase_price_wei != 0) {
