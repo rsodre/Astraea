@@ -9,6 +9,7 @@ if [ $# -lt 1 ]; then
 fi
 
 # initialize argument variables
+export CLIENT_GEN_PATH="../client/src/generated"
 export PROFILE=
 export ARG_BINDINGS=
 export ARG_OFFLINE=
@@ -32,7 +33,7 @@ do
   elif [[ $arg == "--inspect" ]]; then
     export ARG_INSPECT="--stats.by-tag"
   elif [[ $arg == "--bindings" ]]; then
-    export ARG_BINDINGS="--typescript"
+    export ARG_BINDINGS="--typescript --bindings-output $CLIENT_GEN_PATH"
   elif [[ $arg == "--verbose" ]]; then
     export ARG_VERBOSE="-vvv"
   elif [[ $arg == --* ]]; then
@@ -89,16 +90,14 @@ execute_command () {
 #-----------------
 # env setup
 #
-export GAME_SLUG="aster"
 export PROJECT_NAME=$(toml get $DOJO_PROFILE_FILE --raw world.name)
 export WORLD_ADDRESS=$(get_profile_env "world_address")
 export WORLD_BLOCK=$(get_profile_env "world_block")
 export ACCOUNT_ADDRESS=${DOJO_ACCOUNT_ADDRESS:-$(get_profile_env "account_address")}
 export RPC_URL=${STARKNET_RPC_URL:-$(get_profile_env "rpc_url")}
 
-export CLIENT_MANIFEST_PATH="../../../CC/cc-dapp-v2/web/src/networks/generated/$GAME_SLUG"
 export MANIFEST_FILE_PATH="./manifest_$PROFILE.json"
-export BINDINGS_PATH="./bindings"
+export BINDINGS_PATH=$CLIENT_GEN_PATH
 
 # contracts
 export TOKEN_ADDRESS=$(get_contract_address "aster-token")

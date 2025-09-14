@@ -51,7 +51,6 @@ pub mod minter {
     ) {
         let mut store: Store = StoreTrait::new(self.world_default());
         assert(treasury_address.is_non_zero(), Errors::INVALID_TREASURY_ADDRESS);
-        assert(purchase_coin_address.is_non_zero(), Errors::INVALID_COIN_ADDRESS);
         store.set_token_config(@TokenConfig{
             token_address: store.world.token_address(),
             treasury_address,
@@ -90,7 +89,7 @@ pub mod minter {
                 (Option::Some("Paused"))
             } else if (!token_config.account_can_mint(@store, recipient)) {
                 (Option::Some("Minted maximum"))
-            } else if (token_dispatcher.available_supply() == 0) {
+            } else if (token_dispatcher.available_supply().is_zero()) {
                 (Option::Some("Unavailable"))
             } else if (token_config.purchase_coin_dispatcher().balance_of(starknet::get_caller_address()) < token_config.purchase_price_wei.into()) {
                 (Option::Some("Insufficient balance"))
@@ -121,7 +120,7 @@ pub mod minter {
                 assert(token_config.account_can_mint(@store, recipient), Errors::MINTED_MAXIMUM);
 
                 // charge!
-                if (token_config.purchase_price_wei != 0) {
+                if (token_config.purchase_coin_address.is_non_zero() && token_config.purchase_price_wei.is_non_zero()) {
                     // must have balance
                     let coin_dispatcher: IERC20Dispatcher = token_config.purchase_coin_dispatcher();
                     let balance: u256 = coin_dispatcher.balance_of(caller);

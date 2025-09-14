@@ -16,7 +16,7 @@ fi
 
 echo "BINDINGS_PATH: $BINDINGS_PATH"
 echo "SDK_GAME_PATH: $SDK_GAME_PATH"
-echo "CLIENT_MANIFEST_PATH: $CLIENT_MANIFEST_PATH"
+echo "CLIENT_GEN_PATH: $CLIENT_GEN_PATH"
 
 #-----------------
 # build
@@ -61,10 +61,10 @@ echo "👍"
 # copy manifest to client
 #
 echo "------------------------------------------------------------------------------"
-echo ">>> Copying manifest [$MANIFEST_FILE_PATH] to [$CLIENT_MANIFEST_PATH/]"
-mkdir -p $CLIENT_MANIFEST_PATH
-cp $MANIFEST_FILE_PATH $CLIENT_MANIFEST_PATH/
-ls -l $CLIENT_MANIFEST_PATH
+echo ">>> Copying manifest [$MANIFEST_FILE_PATH] to [$CLIENT_GEN_PATH/]"
+mkdir -p $CLIENT_GEN_PATH
+cp $MANIFEST_FILE_PATH $CLIENT_GEN_PATH/
+ls -l $CLIENT_GEN_PATH
 echo "👍"
 
 #------------------
