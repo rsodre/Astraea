@@ -6,7 +6,7 @@ mod tests {
     use aster::{
         systems::{token::{ITokenDispatcherTrait}},
         systems::{minter::{IMinterDispatcherTrait}},
-        models::gen2::{constants},
+        models::props::{constants},
         models::seed::{Seed},
         utils::misc::{WEI},
     };

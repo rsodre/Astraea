@@ -24,7 +24,7 @@ pub mod minter {
     use aster::utils::misc::{WEI};
     use aster::models::{
         token_config::{TokenConfig, TokenConfigTrait},
-        gen2::{constants},
+        props::{constants},
     };
     use aster::utils::math::{SafeMathU64};
     

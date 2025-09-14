@@ -8,7 +8,7 @@ pub const DEFAULT_ROYALTY: u128 = 250;
 pub fn TOKEN_NAME() -> ByteArray {"Aster"}
 pub fn TOKEN_SYMBOL() -> ByteArray {"ASTER"}
 // contract metadata
-pub fn METADATA_DESCRIPTION() -> ByteArray {"Aster is the september flower. Specially seeded for Starktember 2025."}
+pub fn METADATA_DESCRIPTION() -> ByteArray {"Aster is the september flower, from the greek word for Star, symbolizing love, patience, wisdom, and faith. Seeded with love for Starktember 2025."}
 pub fn EXTERNAL_LINK() -> ByteArray {"https://collect-code.com"}
 
 pub fn BANNER_IMAGE() -> ByteArray {

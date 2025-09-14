@@ -121,11 +121,11 @@ pub mod token {
 
     // use aster::models::token_config::{TokenConfig, TokenConfigTrait};
     use aster::models::seed::{Seed, SeedTrait};
-    use aster::models::gen2::props::{Gen2Props, Gen2PropsTrait};
-    use aster::systems::renderer::{Gen2RendererTrait};
+    use aster::models::props::props::{AsterProps, AsterPropsTrait};
+    use aster::systems::renderer::{AsterRendererTrait};
     use aster::libs::store::{Store, StoreTrait};
     use aster::libs::dns::{DnsTrait, SELECTORS};
-    use aster::models::gen2::{constants};
+    use aster::models::props::{constants};
 
     mod Errors {
         pub const CALLER_IS_NOT_OWNER: felt252      = 'ASTER: caller is not owner';
@@ -191,7 +191,8 @@ pub mod token {
         fn get_token_svg(ref self: ContractState, token_id: u128) -> ByteArray {
             let mut store: Store = StoreTrait::new(self.world_default());
             let seed: Seed = store.get_seed(token_id);
-            (Gen2RendererTrait::render_svg(@seed.generate_props()))
+            let token_props: AsterProps = AsterPropsTrait::generate(@seed, true);
+            (AsterRendererTrait::render_svg(@token_props))
         }
 
         //
@@ -264,13 +265,13 @@ pub mod token {
             let mut store: Store = StoreTrait::new(self.world_default());
             // gather data
             let seed: Seed = store.get_seed(token_id.low);
-            let token_props: Gen2Props = seed.generate_props();
-            let svg: ByteArray = Gen2RendererTrait::render_svg(@token_props);
+            let token_props: AsterProps = AsterPropsTrait::generate(@seed, true);
+            let svg: ByteArray = AsterRendererTrait::render_svg(@token_props);
             // return the metadata to be rendered by the component
             // https://docs.opensea.io/docs/metadata-standards#metadata-structure
             let metadata = TokenMetadata {
                 token_id,
-                name: format!("Karat II #{}", token_id.low),
+                name: format!("Aster #{}", token_id.low),
                 description: constants::METADATA_DESCRIPTION(),
                 image: Option::Some(EncoderTrait::encode_svg(svg, true)),
                 image_data: Option::None,

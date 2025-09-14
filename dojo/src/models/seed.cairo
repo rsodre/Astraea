@@ -9,9 +9,17 @@ pub struct Seed {
     pub seed: felt252,
 }
 
+#[derive(Copy, Drop, Serde)]
+pub struct Seeder {
+    pub seed: felt252,
+    pub current: u256,
+}
+
+
 //---------------------------------------
 // Traits
 //
+use aster::utils::hash::{hash_values};
 
 #[generate_trait]
 pub impl SeedImpl of SeedTrait {
@@ -21,57 +29,39 @@ pub impl SeedImpl of SeedTrait {
     }
 }
 
-#[derive(Copy, Drop, Serde)]
-pub struct Seeder {
-    pub seed: u256,
-    pub count: usize,
-}
-
-#[derive(Copy, Drop, Serde)]
-pub struct RenderParams {
-    pub sc_x: usize,
-    pub sc_y: usize,
-    pub off_x: usize,
-    pub off_y: usize,
-    pub mod_x: usize,
-    pub mod_y: usize,
-    pub fade_type: usize,
-    pub fade_amount: usize,
-}
-
 #[generate_trait]
 pub impl SeederImpl of SeederTrait {
-    fn new(seed: u256) -> Seeder {
+    fn new(seed: felt252) -> Seeder {
         (Seeder {
             seed,
-            count: 0,
+            current: seed.into(),
         })
     }
-    fn get_next(ref self: Seeder, max_exclusive: usize) -> usize {
-        let result: u256 = ((self.seed & 0xff) % max_exclusive.into());
-        self.count += 1;
-        self.seed /= 0x100;
+    fn get_next_u8(ref self: Seeder, max_exclusive: u8) -> u8 {
+        let result: u128 = ((self.current.low & 0xff) % max_exclusive.into());
+        self._recycle(0x100);
         (result.try_into().unwrap())
     }
-    fn get_render_params(ref self: Seeder, char_count: usize, HALF_W: usize, HALF_H: usize) -> RenderParams {
-        let sc_x: usize = self.get_next(HALF_W);
-        let sc_y = sc_x * self.get_next(3);
-        let off_x: usize = self.get_next(HALF_W);
-        let off_y: usize = self.get_next(HALF_H);
-        let mod_x: usize = 1 + self.get_next(char_count);
-        let mod_y: usize = 1 + self.get_next(char_count);
-        let fade_type: usize = self.get_next(6);
-        let fade_amount: usize = 1 + self.get_next(4);
-        (RenderParams {
-            sc_x,
-            sc_y,
-            off_x,
-            off_y,
-            mod_x,
-            mod_y,
-            fade_type,
-            fade_amount,
-        })
+    fn get_next_u16(ref self: Seeder, max_exclusive: u16) -> u16 {
+        let result: u128 = ((self.current.low & 0xffff) % max_exclusive.into());
+        self._recycle(0x10000);
+        (result.try_into().unwrap())
+    }
+    fn _recycle(ref self: Seeder, shift: u128) {
+        // shift current value...
+        self.current.low = self.current.low / shift;
+        // if less than 2 bytes, recycle
+        if (self.current.low < 0x100) {
+            if (self.current.high != 0) {
+                // use high part if available
+                self.current.low = self.current.high;
+                self.current.high = 0;
+            } else {
+                // hash original seed for more values
+                self.seed = hash_values([self.seed].span());
+                self.current = self.seed.into();
+            }
+        }
     }
 }
 
@@ -105,32 +95,47 @@ mod unit {
 
     #[test]
     fn test_seeder() {
-        let seed: u256 = 0x060504030201;
+        let seed: felt252 = u256 {
+            high: 0x5040302010,
+            low: 0x07060504030201,
+        }.try_into().unwrap();
         let mut seeder: Seeder = SeederTrait::new(seed);
-        assert_eq!(seeder.seed, seed.into(), "seed.seed_init");
-        assert_eq!(seeder.count, 0, "seeder.count_init");
-        assert_eq!(seeder.get_next(10), 1, "seeder.get_next(10)_1");
-        assert_eq!(seeder.count, 1, "seeder.count(1)");
-        assert_eq!(seeder.get_next(10), 2, "seeder.get_next(10)_2");
-        assert_eq!(seeder.count, 2, "seeder.count(1)");
-        assert_eq!(seeder.get_next(10), 3, "seeder.get_next(10)_3");
-        assert_eq!(seeder.count, 3, "seeder.count(1)");
-        assert_eq!(seeder.get_next(10), 4, "seeder.get_next(10)_4");
-        assert_eq!(seeder.count, 4, "seeder.count(1)");
-        assert_eq!(seeder.get_next(10), 5, "seeder.get_next(10)_5");
-        assert_eq!(seeder.count, 5, "seeder.count(1)");
-        assert_eq!(seeder.get_next(10), 6, "seeder.get_next(10)_6");
-        assert_eq!(seeder.count, 6, "seeder.count(1)");
-        assert_eq!(seeder.get_next(10), 0, "seeder.get_next(10)_7");
-        assert_eq!(seeder.count, 7, "seeder.count(1)");
-        // test mods
-        let mut seeder: Seeder = SeederTrait::new(seed);
-        assert_eq!(seeder.get_next(3), 1, "seeder.get_next(3)_1");
-        assert_eq!(seeder.get_next(3), 2, "seeder.get_next(3)_2");
-        assert_eq!(seeder.get_next(3), 0, "seeder.get_next(3)_3");
-        assert_eq!(seeder.get_next(3), 1, "seeder.get_next(3)_4");
-        assert_eq!(seeder.get_next(3), 2, "seeder.get_next(3)_5");
-        assert_eq!(seeder.get_next(3), 0, "seeder.get_next(3)_6");
-        assert_eq!(seeder.get_next(3), 0, "seeder.get_next(3)_7");
+        let value: u8 = seeder.get_next_u8(0xff);
+        assert_eq!(value, 0x01, "seeder.get_next_u8()");
+        assert_eq!(seeder.seed, seed, "seeder.seed");
+        assert_eq!(seeder.current.high, 0x5040302010, "seeder.high");
+        assert_eq!(seeder.current.low, 0x070605040302, "seeder.low");
+        let value: u16 = seeder.get_next_u16(0xffff);
+        assert_eq!(value, 0x0302, "seeder.get_next_u16()");
+        assert_eq!(seeder.seed, seed, "seeder.seed");
+        assert_eq!(seeder.current.high, 0x5040302010, "seeder.high");
+        assert_eq!(seeder.current.low, 0x07060504, "seeder.low");
+        let value: u16 = seeder.get_next_u16(0xffff);
+        assert_eq!(value, 0x0504, "seeder.get_next_u16()");
+        assert_eq!(seeder.seed, seed, "seeder.seed");
+        assert_eq!(seeder.current.high, 0x5040302010, "seeder.high");
+        assert_eq!(seeder.current.low, 0x0706, "seeder.low");
+        // last value, will use high part
+        let value: u8 = seeder.get_next_u8(0xff);
+        assert_eq!(value, 0x06, "seeder.get_next_u8()");
+        assert_eq!(seeder.seed, seed, "seeder.seed");
+        assert_eq!(seeder.current.high, 0, "seeder.high");
+        assert_eq!(seeder.current.low, 0x5040302010, "seeder.low");
+        let value: u16 = seeder.get_next_u16(0xffff);
+        assert_eq!(value, 0x2010, "seeder.get_next_u16()");
+        assert_eq!(seeder.seed, seed, "seeder.seed");
+        assert_eq!(seeder.current.high, 0, "seeder.high");
+        assert_eq!(seeder.current.low, 0x504030, "seeder.low");
+        let value: u8 = seeder.get_next_u8(0xff);
+        assert_eq!(value, 0x30, "seeder.get_next_u16()");
+        assert_eq!(seeder.seed, seed, "seeder.seed");
+        assert_eq!(seeder.current.high, 0, "seeder.high");
+        assert_eq!(seeder.current.low, 0x5040, "seeder.low");
+        // last value, will hash new seed
+        let value: u8 = seeder.get_next_u8(0xff);
+        assert_eq!(value, 0x40, "seeder.get_next_u16()");
+        assert_ne!(seeder.seed, seed, "seeder.seed");
+        assert_gt!(seeder.current.high, 0xffffffffffffffff, "seeder.high");
+        assert_gt!(seeder.current.low, 0xffffffffffffffff, "seeder.low");
     }
 }

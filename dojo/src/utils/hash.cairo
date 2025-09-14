@@ -12,7 +12,7 @@ pub fn make_seed(contract_address: ContractAddress, token_id: u128) -> felt252 {
     ].span()))
 }
 
-fn hash_values(values: Span<felt252>) -> felt252 {
+pub fn hash_values(values: Span<felt252>) -> felt252 {
     assert(values.len() > 0, 'hash_values() has no values!');
     let mut state: HashState = PoseidonTrait::new();
     state = state.update(*values[0]);
@@ -28,7 +28,7 @@ fn hash_values(values: Span<felt252>) -> felt252 {
     (state.finalize())
 }
 
-fn felt_to_u128(value: felt252) -> u128 {
+pub fn felt_to_u128(value: felt252) -> u128 {
     let as_u256: u256 = value.into();
     (as_u256.low)
 }

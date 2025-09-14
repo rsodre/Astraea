@@ -7,10 +7,9 @@ mod models {
     pub mod events;
     pub mod seed;
     pub mod token_config;
-    pub mod gen2 {
+    pub mod props {
         pub mod constants;
         pub mod props;
-        pub mod class;
         pub mod palette;
     }
 }
@@ -26,7 +25,6 @@ mod utils {
     pub mod hash;
     pub mod math;
     pub mod misc;
-    pub mod short_string;
 }
 
 #[cfg(test)]
