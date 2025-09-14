@@ -19,16 +19,6 @@ pub impl PaletteImpl of PaletteTrait {
     fn palette_count() -> u8 {
         (5)
     }
-    fn name(self: @Palette) -> ByteArray {
-        (match self {
-            Palette::None       => "?",
-            Palette::Palette1   => "Palette1",
-            Palette::Palette2   => "Palette2",
-            Palette::Palette3   => "Palette3",
-            Palette::Palette4   => "Palette4",
-            Palette::Palette5   => "Palette5",
-        })
-    }
     //---------------------------------------
     // generated from:
     // https://editor.p5js.org/rsodre/sketches/LbtLW29da
@@ -68,6 +58,18 @@ pub impl PaletteImpl of PaletteTrait {
 
 
 
+impl PaletteIntoByteArray of Into<Palette, ByteArray> {
+    fn into(self: Palette) -> ByteArray {
+        (match self {
+            Palette::None       => "?",
+            Palette::Palette1   => "Palette1",
+            Palette::Palette2   => "Palette2",
+            Palette::Palette3   => "Palette3",
+            Palette::Palette4   => "Palette4",
+            Palette::Palette5   => "Palette5",
+        })
+    }
+}
 impl PaletteIntoU8 of Into<Palette, u8> {
     fn into(self: Palette) -> u8 {
         match self {

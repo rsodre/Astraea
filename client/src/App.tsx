@@ -84,7 +84,7 @@ const TokenImage = ({
         setImage(json.image);
       });
     }
-  }, [client]);
+  }, [client, tokenId]);
 
   return (
     <Box>

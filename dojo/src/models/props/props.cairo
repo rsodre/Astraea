@@ -8,10 +8,28 @@ pub struct AsterProps {
     pub seeder: Seeder,
     // props
     pub palette: Palette,
-    pub density: u8,
+    pub density: usize,
+    pub distribution: Distribution,
     // metadata (optional)
     pub attributes: Span<Attribute>,
     pub additional_metadata: Span<Attribute>,
+}
+
+
+#[derive(Drop, Copy, PartialEq)]
+pub enum Distribution {
+    Order,
+    Spread,
+    Chaos,
+}
+impl DistributionIntoByteArray of Into<Distribution, ByteArray> {
+    fn into(self: Distribution) -> ByteArray {
+        (match self {
+            Distribution::Order   => "Order",
+            Distribution::Spread  => "Spread",
+            Distribution::Chaos   => "Chaos",
+        })
+    }
 }
 
 //---------------------------------------
@@ -22,25 +40,18 @@ use aster::models::seed::{Seed, Seeder, SeederTrait};
 
 #[generate_trait]
 pub impl AsterPropsImpl of AsterPropsTrait {
-    // internal
-    fn _generate_palette(ref self: Seeder) -> Palette {
-        let palette_num: u8 = self.get_next_u8(PaletteTrait::palette_count()) + 1;
-        (palette_num.into())
-    }
-    fn _generate_density(ref self: Seeder) -> u8 {
-        let densities: Span<u8> = array![1, 2, 2, 3, 3, 4, 4, 5, 5, 6].span();
-        let density_num: u8 = self.get_next_u8(densities.len().try_into().unwrap());
-        (*densities.at(density_num.into()))
-    }
     //
     // Props
     //
     fn generate(seed: @Seed, generate_attributes: bool) -> AsterProps {
         //
         // seeded props
-        let mut seeder: Seeder = SeederTrait::new((*seed.seed).into());
+        let mut seeder: Seeder = SeederTrait::new((*seed.seed).into(), *seed.token_id);
         let palette: Palette = seeder._generate_palette();
-        let density: u8 = seeder._generate_density();
+        let density: usize = seeder._generate_density();
+        let distribution: Distribution =
+            if (density == 1) {Distribution::Order}
+            else {seeder._generate_distribution()};
         //
         // attributes (optional)
         let mut attributes: Span<Attribute> = (
@@ -48,11 +59,15 @@ pub impl AsterPropsImpl of AsterPropsTrait {
                 array![
                     Attribute {
                         key: "Palette",
-                        value: palette.name(),
+                        value: palette.into(),
                     },
                     Attribute {
                         key: "Density",
                         value: format!("{}", density),
+                    },
+                    Attribute {
+                        key: "Distribution",
+                        value: distribution.into(),
                     },
                 ]
             } else {
@@ -76,8 +91,25 @@ pub impl AsterPropsImpl of AsterPropsTrait {
             seeder,
             palette,
             density,
+            distribution,
             attributes,
             additional_metadata,
         })
+    }
+    //
+    // internal
+    fn _generate_palette(ref self: Seeder) -> Palette {
+        let num: u8 = self.get_next_u8(PaletteTrait::palette_count()) + 1;
+        (num.into())
+    }
+    fn _generate_density(ref self: Seeder) -> usize {
+        let options: Span<usize> = array![1, 2, 2, 3, 3, 4, 4, 5, 5, 6].span();
+        let num: u8 = self.get_next_u8(options.len().try_into().unwrap());
+        (*options.at(num.into()))
+    }
+    fn _generate_distribution(ref self: Seeder) -> Distribution {
+        let options: Span<Distribution> = array![Distribution::Order, Distribution::Chaos, Distribution::Chaos].span();
+        let num: u8 = self.get_next_u8(options.len().try_into().unwrap());
+        (*options.at(num.into()))
     }
 }

@@ -13,6 +13,7 @@ pub struct Seed {
 pub struct Seeder {
     pub seed: felt252,
     pub current: u256,
+    pub token_id: u128,
 }
 
 
@@ -31,21 +32,30 @@ pub impl SeedImpl of SeedTrait {
 
 #[generate_trait]
 pub impl SeederImpl of SeederTrait {
-    fn new(seed: felt252) -> Seeder {
+    fn new(seed: felt252, token_id: u128) -> Seeder {
         (Seeder {
             seed,
             current: seed.into(),
+            token_id,
         })
     }
     fn get_next_u8(ref self: Seeder, max_exclusive: u8) -> u8 {
-        let result: u128 = ((self.current.low & 0xff) % max_exclusive.into());
-        self._recycle(0x100);
-        (result.try_into().unwrap())
+        ((self._next(max_exclusive.into(), 0xff, 0x100)).try_into().unwrap())
+    }
+    fn get_next_u8_usize(ref self: Seeder, max_exclusive: u32) -> u32 {
+        ((self._next(max_exclusive.into(), 0xff, 0x100)).try_into().unwrap())
     }
     fn get_next_u16(ref self: Seeder, max_exclusive: u16) -> u16 {
-        let result: u128 = ((self.current.low & 0xffff) % max_exclusive.into());
-        self._recycle(0x10000);
-        (result.try_into().unwrap())
+        ((self._next(max_exclusive.into(), 0xffff, 0x10000)).try_into().unwrap())
+    }
+    fn get_next_u16_usize(ref self: Seeder, max_exclusive: usize) -> usize {
+        ((self._next(max_exclusive.into(), 0xffff, 0x10000)).try_into().unwrap())
+    }
+    #[inline(always)]
+    fn _next(ref self: Seeder, max_exclusive: usize, mask: u128, shift: u128) -> u128 {
+        let result: u128 = ((self.current.low & mask) % max_exclusive.into());
+        self._recycle(shift);
+        (result)
     }
     fn _recycle(ref self: Seeder, shift: u128) {
         // shift current value...
@@ -99,7 +109,7 @@ mod unit {
             high: 0x5040302010,
             low: 0x07060504030201,
         }.try_into().unwrap();
-        let mut seeder: Seeder = SeederTrait::new(seed);
+        let mut seeder: Seeder = SeederTrait::new(seed, 1);
         let value: u8 = seeder.get_next_u8(0xff);
         assert_eq!(value, 0x01, "seeder.get_next_u8()");
         assert_eq!(seeder.seed, seed, "seeder.seed");

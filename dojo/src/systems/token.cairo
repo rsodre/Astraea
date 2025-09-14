@@ -191,8 +191,8 @@ pub mod token {
         fn get_token_svg(ref self: ContractState, token_id: u128) -> ByteArray {
             let mut store: Store = StoreTrait::new(self.world_default());
             let seed: Seed = store.get_seed(token_id);
-            let token_props: AsterProps = AsterPropsTrait::generate(@seed, true);
-            (AsterRendererTrait::render_svg(@token_props))
+            let mut props: AsterProps = AsterPropsTrait::generate(@seed, true);
+            (AsterRendererTrait::render_svg(ref props))
         }
 
         //
@@ -265,8 +265,8 @@ pub mod token {
             let mut store: Store = StoreTrait::new(self.world_default());
             // gather data
             let seed: Seed = store.get_seed(token_id.low);
-            let token_props: AsterProps = AsterPropsTrait::generate(@seed, true);
-            let svg: ByteArray = AsterRendererTrait::render_svg(@token_props);
+            let mut props: AsterProps = AsterPropsTrait::generate(@seed, true);
+            let svg: ByteArray = AsterRendererTrait::render_svg(ref props);
             // return the metadata to be rendered by the component
             // https://docs.opensea.io/docs/metadata-standards#metadata-structure
             let metadata = TokenMetadata {
@@ -279,8 +279,8 @@ pub mod token {
                 background_color: Option::Some("000000"),
                 animation_url: Option::None,
                 youtube_url: Option::None,
-                attributes: Option::Some(token_props.attributes),
-                additional_metadata: Option::Some(token_props.additional_metadata),
+                attributes: Option::Some(props.attributes),
+                additional_metadata: Option::Some(props.additional_metadata),
             };
             (Option::Some(metadata))
         }
