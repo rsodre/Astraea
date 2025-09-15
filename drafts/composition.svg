@@ -5,40 +5,82 @@ width="1200" height="1200" viewBox="0 0 140 140">
 <style type="text/css">
 <!-- .bl{mix-blend-mode:multiply;} -->
 .bl{mix-blend-mode:screen;}
+.sh{filter:drop-shadow(1px 1px 2px #00000080);}
+.sh2{filter:drop-shadow(1px 1px 1px #00000080);}
 
-<!-- .bg{fill:#000000;}
-.p0{fill:#242b54;}
-.p1{fill:#3a467c;}
-.p2{fill:#5f6aa0;}
-.p3{fill:#8691bc;}
+<!-- Palette 1: ROSA -->
+<!-- .bg{fill:#020001;}
+.p0{fill:#90325B;}
+.p1{fill:#D03E80;}
+.p2{fill:#F77BAF;}
+.p3{fill:#ECA7CB;}
+.p4{fill:#FBDDEA;}
+.m0{fill:#732C2C;}
+.m1{fill:#A52135;}
+.m2{fill:#E9583E;}
+.m3{fill:#FBB451;} -->
+
+<!-- Palette 2: ROXA -->
+<!-- .bg{fill:#020001;}
+.p0{fill:#540967;}
+.p1{fill:#7724AE;}
+.p2{fill:#BA39BC;}
+.p3{fill:#E26DFF;}
+.p4{fill:#DF92FD;}
 .m0{fill:#3b2628;}
-.m1{fill:#513e33;}
-.m2{fill:#816339;}
-.m3{fill:#ab8640;} -->
+.m1{fill:#9b622a;}
+.m2{fill:#e0aa42;}
+.m3{fill:#f3cb45;} -->
 
-.bg{fill:#000000;}
-.p0{fill:#903286;}
-.p1{fill:#ae3ed0;}
-.p2{fill:#d77bf7;}
-.p3{fill:#cfa7ec;}
-.p4{fill:#ece2fd;}
-.m0{fill:#6e2014;}
-.m1{fill:#a55921;}
-.m2{fill:#d18c32;}
-.m3{fill:#eeb441;}
+<!-- Palette 3: AZULO -->
+<!-- .bg{fill:#000002;}
+.p0{fill:#313B73;}
+.p1{fill:#485799;}
+.p2{fill:#707DBE;}
+.p3{fill:#ACB9F1;}
+.p4{fill:#C0E8FF;}
+.m0{fill:#3b2628;}
+.m1{fill:#783C1A;}
+.m2{fill:#BB873E;}
+.m3{fill:#E4AF4D;} -->
 
-<!-- .bg{fill:#292b20;}
-.p1{fill:#ff3464;}
-.p2{fill:#ff6d2a;}
-.m1{fill:#ff6d2a;}
-.m2{fill:#ffc728;}
-.m3{fill:#15bb34;} -->
+<!-- Palette 4: AZUL -->
+.bg{fill:#000002;}
+.p0{fill:#3C40BB;}
+.p1{fill:#4D5CFC;}
+.p2{fill:#2B00FF;}
+.p3{fill:#4E69FF;}
+.p4{fill:#AC9AFF;}
+.m0{fill:#3b2628;}
+.m1{fill:#9B442A;}
+.m2{fill:#E08442;}
+.m3{fill:#F3EA45;}
 
-<!-- .bg{fill:#000a04;}
-.p1{fill:#38b322;}
-.p2{fill:#8e0088;}
-.m1{fill:#9ad5e6;}
-.m2{fill:#ff7c81;} -->
+<!-- Palette 5: AMARELO -->
+<!-- .bg{fill:#020200;}
+.p0{fill:#AD842B;}
+.p1{fill:#F3C81B;}
+.p2{fill:#F0DC01;}
+.p3{fill:#FFF984;}
+.p4{fill:#FFFEE4;}
+.m0{fill:#3b2628;}
+.m1{fill:#9B442A;}
+.m2{fill:#E08442;}
+.m3{fill:#FBFFC9;} -->
+
+<!-- Palette 6: NANANJA -->
+<!-- .bg{fill:#020200;}
+.p0{fill:#6a0e03;}
+.p1{fill:#CA2E0F;}
+.p2{fill:#FF2A00;}
+.p3{fill:#FF892E;}
+.p4{fill:#FFB339;}
+.m0{fill:#72402F;}
+.m1{fill:#CD882F;}
+.m2{fill:#FCBB42;}
+.m3{fill:#FDF59A;} -->
+
+
 
 
 .r{transform-origin:center;transform-box:fill-box;}
@@ -46,13 +88,11 @@ width="1200" height="1200" viewBox="0 0 140 140">
 .r2{transform:rotate(30deg);}
 .r3{transform:rotate(180deg);}
 .r4{transform:rotate(270deg);}
-<!-- .z0{z-index:1;}
-.z1{z-index:2;}
-.z2{z-index:3;} -->
 </style>
 
 
 <defs>
+
 <g id="p1"><path d="M22,34c3.4-6.1-2.7-12.3-7.7-15.1c-1.6,1.1-8.2,4.5-10.1,5.1c-2.6,5.2,7.4,1.5,6.6,7.3c0.5,6-7.9,2.7-8.3,6.9 C7.6,39.6,18.6,40.1,22,34z"/><path d="M69.1,28.1c-1.3-4.1-6.5-1.9-9.6-2.4c7.8-11.4-7.1-8.2-11.1-1.5C49.9,19.7,53.9,0,44.2,7 c-0.2,2.1-4-9.2-6.7,0.6c-2,19.8-0.9-7-9.8-5.9c-5.2,3.7-0.5,11.4-0.7,17c-13.3-10,3.2,12.1-4.2,16.5c4.6,5.6-0.6,5-3.7,9.4 c3.2,1.3,6.1-3.4,8.6-0.9c1.4,2.3-1.8,4-3.4,5.2c-0.2-1.4-0.7-3-2.2-2.8c-5.6,0.4-18.6,5.2-6.2,4.7c1.5,2.6-6.3,5.7-1.9,8.4 c3,1.8,7.5-7.4,9.1-2.6c6.9-5.3,1.4,4.8,4,8.1c1.9,1.7,2.2-1.6,3.9-1.7c2.3-0.1,1.3-2.3,1-3.4c-1.5-2.8,1.2-9-3.6-8.7 c0.2-0.6,0.2-1.4,0.6-1.8c6.5-8.7,3.7,8.1,4.2,11.9c5-1.3-1.1-12.7,6.1-15.8c-2.5-3.3-9.2-1.1-10-6.5C28.9,28.3,44.5,24.9,44.3,37 C43,45.3,71.4,34.9,69.1,28.1z"/></g>
 <g id="p2"><path d="M28,41.3c-1.7-1-0.9-1.6,0-2.9c1-3.6-5.5,0-6.9-1.7c4.2,0.8,6.8-4.4,3-6.8c2.6,2.2,11.5,1.4,8.5-3.7 c9.3,3,6.1-14,4.1-18.9C34.4,2,31.1,8.3,28,5.8c-13.1,0.1-5.5,8.3-1.3,15.3c-4.9-0.5-7.3-5.2-11.5-6.1c-3.5,2.1-1.2,4.7,0,7.6 c-8.7-4.7-9,3.4-1.1,4.8c-3.6,0.8-6.1-1.6-9.4-2c-2.7,5.5-2.4,5.9,2.7,7.3c0.3,2.2-1.9,2-2.7,3c-10.9,3.5,5.6,9.2,9.6,9.1 c-7.9,3.7-7.3,8.5,0.8,10.8c0.5,2.6,2.4,1.2,3.5,0.9C22.3,55.4,30.8,45.2,28,41.3z M21.1,42.6c-0.9,1-2.1,1.2-3.3,1.4 c1.6-0.6,3.1-1.5,4.6-2.7C22.6,42.1,21.5,42.1,21.1,42.6z"/><path d="M41.1,51.1c2.9-15.9-17.1,4.6-16.4,10.1c0.5,8.6,8.6,0,9.3-4.3c-0.8,3.7,4.7,8.5,7.5,4.7 C42.2,58,38.9,54.8,41.1,51.1z"/><path d="M57.8,52.7c-1.1-2.1,1.8-4.9-1-6.7c-4-0.6-9.1-9.2-12.7-3.3c2.8,3.8,1.7,9.2,6.3,12 C55.3,58.4,64.8,62.7,57.8,52.7z"/><path d="M60.2,36.8c-3.8-2.1-9.3-2.3-13,0.2C47.1,42.4,64.1,41.6,60.2,36.8z"/><path d="M41.2,5.8c1.4,6.5-6.2,19,0.7,21.8C41.7,21.2,48,9.5,41.2,5.8z"/><path d="M46.9,29.4c10.8-2-2.4-18.6-2.5-6.2C45.6,25.2,42.3,29,46.9,29.4z"/><path d="M46.8,33.8c1.1,3.7,16.4-3.9,8.9-4.6C52.9,29.8,46.2,29.9,46.8,33.8z"/></g>
 <g id="p3"><path d="M46.4,25.8c2.2-3,6.3-17.7-1.2-11.9c-5.1-4.8-4.4,3.3-7.3,3.4c-0.7,0-0.1,2.3-2.2,2.5 c1.6-9.9-12.5-18.9-6.1-3.5c-1.3-4.1-6-5.7-9.6-7.1c-4.9,4.3,0.7,7.9,0.6,11.9c-9.6-10.3-14.3,1.8-4.8,6c-2.1-0.5-4.2-2-6.3-2.8 C2.9,21.9,4,30,10.2,30.3c-9.7-0.2-6.7,11.2,2.2,8.2c-1.8,0.4-4.3,0.6-4.2,2.9c2,5.1,12,1.5,15.8-0.3c-2.7,2.7-6.5,4.4-8.6,8.6 c2.4-0.7,4-1.2,6-1.8c-1.7,12.7,18.8-9.7,5.1-8.7c4.1-3.3-2.5-7.3,1.8-9.2C34,26.8,43.3,31.2,46.4,25.8z"/><path d="M37.3,43.3c-6.6-1.2-2.5,6.9-2.9,10.4c0.1,1.9-1,4.8,2.9,3.7C38.4,52.7,37.1,48,37.3,43.3z"/><path d="M64.1,32.3c-5.4-1.8-9,2.7-14.9,0.5c2.7-2.6,9.8-1,10.4-5.3c-4.4-2.7-11.2,2.9-16,4.1c-0.3,1.3,0.3,2,1.6,2.2 c-1.6,0.7-1.7,2.3-1.7,3.8c0.8,0.2,1.6,0.4,2.3,0.6c-1.2,0.2-2.3,0.9-3.5,1.2c1.2,3,6.8,3.4,8.6,6.5c-2.6-0.4-5.2-1.2-7.5-2.5 c-2,1.7-0.8,3.8-0.9,5.9c0,4.7,4.3,6.1,6.7,9c5.9,2.8,4.7-5.1,1.3-7.2c5.9,4.9,13.5,0.3,3.6-3.9c6.9,1.2,8.3-7.1,1.1-7.9 c1.6-0.1,3.2-0.3,4.8-0.7c1.8-1.4,6.3,2.2,6-3.2C66.3,33.8,65.9,33.2,64.1,32.3z"/></g>
@@ -87,38 +127,55 @@ width="1200" height="1200" viewBox="0 0 140 140">
 <path id="m28" d="M43.4,33.4c-0.5,1.6-3.3,0.2-3.4,3c-0.1,2-2.2,3.1-4.6,2.3c-2-0.7-1.8-2.5-1.5-3.6 c0.6-2,1.9-4.4,4.5-3.3c1.9,0.8,3.4,1,5-0.2C44.1,32.2,44,32.8,43.4,33.4z"/>
 <path id="m29" d="M39.7,36.1c-1.6,0.2-2.4,2.2-4,2.4c-0.6,0.1-3.2,0-2.9-2.4c0.3-2,1.5-2.8,3.4-2.7 C37.8,33.5,39.2,33.9,39.7,36.1z"/>
 <path id="m2a" d="M37,34c1,2.1-0.3,3.1-2,3.6c-0.7,0.2-1-0.7-1-1.4C33.8,33.9,35.5,34.1,37,34C37,34,37,34,37,34z"/>
+
+<filter id="filter" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="linearRGB">
+  <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="4" seed="15" stitchTiles="stitch" x="0%" y="0%" width="100%" height="100%" result="turbulence"></feTurbulence>
+  <feSpecularLighting surfaceScale="10" specularConstant="1.1" specularExponent="20" lighting-color="#417505" x="0%" y="0%" width="100%" height="100%" in="turbulence" result="specularLighting">
+    <feDistantLight azimuth="3" elevation="200"></feDistantLight>
+  </feSpecularLighting>
+  <feColorMatrix type="saturate" values="0" x="0%" y="0%" width="100%" height="100%" in="specularLighting" result="colormatrix"></feColorMatrix>
+</filter>
+
 </defs>
 
 
 <g class="g" style="transform:translate(-35px,-35px)">
-<rect x="35" y="35" width="140" height="140" class="bg"/>
-
-<g x="0" y="0">
-<use href="#p3" class="p0 r r2"/>
-<use href="#p7" class="p1 bl r r3"/>
-<use href="#m11" class="m0 r r4"/>
-<use href="#m26" class="m1 r r1"/>
-</g>
+<rect x="35" y="35" width="140" height="140" class="bg" />
+<rect x="35" y="35" width="140" height="140" fill="#417505"  filter="url(#filter)"/>
 
 <g style="transform:translate(35px,35px)">
-<use href="#p4" class="p1 r r2"/>
-<use href="#p8" class="p2 bl r r1"/>
-<use href="#m12" class="m1 r r3"/>
+<use href="#p3" class="p2 r r2 sh"/>
+<use href="#p7" class="p3 r r3 bl"/>
+<use href="#m11" class="m1 r r4 sh2"/>
+<use href="#m26" class="m2 r r1"/>
+</g>
+
+<g style="transform:translate(95px,45px)">
+<use href="#p4" class="p1 r r2 sh"/>
+<use href="#p8" class="p2 r r1 bl"/>
+<use href="#m12" class="m1 r r3 sh2"/>
 <use href="#m27" class="m2 r r4"/>
 </g>
 
 <g style="transform:translate(70px,70px)">
-<use href="#p5" class="p2 r r2"/>
-<use href="#pa" class="p3 bl r r1"/>
-<use href="#m13" class="m2 r r3"/>
-<use href="#m25" class="m3 r r4"/>
+  <use href="#p5" class="p2 r r2 sh"/>
+  <use href="#pa" class="p3 r r1 bl"/>
+  <use href="#m13" class="m2 r r3"/>
+  <use href="#m25" class="m3 r r4"/>
 </g>
 
-<g style="transform:translate(80px,80px)">
-<use href="#p5" class="p1 r r2"/>
+<g style="transform:translate(105px,105px)">
+  <use href="#p5" class="p3 r r2 sh"/>
+  <use href="#pa" class="p4 r r1 bl"/>
+  <use href="#m13" class="m2 r r3 sh2"/>
+  <use href="#m25" class="m3 r r4"/>
+</g>
+
+<g style="transform:translate(35px,105px)">
+<use href="#p5" class="p0 r r2 sh"/>
 <use href="#pa" class="p1 bl r r1"/>
-<use href="#m13" class="m1 r r3"/>
-<use href="#m25" class="m1 r r4"/>
+<use href="#m13" class="m1 r r3 sh2"/>
+<use href="#m25" class="m2 r r4"/>
 </g>
 
 </g>

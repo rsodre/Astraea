@@ -3,7 +3,7 @@ use aster::models::{
     seed::{SeederTrait},
     props::{
         props::{AsterProps, Distribution},
-        palette::{PaletteTrait},
+        palette::{Palette, PaletteTrait},
     },
 };
 use aster::utils::math::{SafeMathU32};
@@ -26,6 +26,9 @@ pub impl AsterRendererImpl of AsterRendererTrait {
         let density: usize = props.density;
 //-------
 // DEBUG
+let _pnum: u8 = ((props.token_id-1) / 6).try_into().unwrap() + 1;
+let _palette: Palette = _pnum.into();
+let palette_styles: ByteArray = _palette.get_styles();
 let density: usize = (((props.token_id-1) % 6) + 1).try_into().unwrap();
 let distribution: Distribution =
     if (props.token_id <= 6) {Distribution::Order}
@@ -67,11 +70,10 @@ let distribution: Distribution =
         let r3: u16 = props.seeder.get_next_u16(360);
         let r4: u16 = props.seeder.get_next_u16(360);
         result.append(@format!(
-            "<style>.bl{{mix-blend-mode:screen;}}.r{{transform-origin:center;transform-box:fill-box;}}.r0{{transform:rotate({}deg);}}.r1{{transform:rotate({}deg);}}.r2{{transform:rotate({}deg);}}.r3{{transform:rotate({}deg);}}.r4{{transform:rotate({}deg);}}{}</style>",
+            "<style>.bl{{mix-blend-mode:screen;}}.sh{{filter:drop-shadow(1px 1px 2px #00000080);}}.r{{transform-origin:center;transform-box:fill-box;}}.r0{{transform:rotate({}deg);}}.r1{{transform:rotate({}deg);}}.r2{{transform:rotate({}deg);}}.r3{{transform:rotate({}deg);}}.r4{{transform:rotate({}deg);}}{}</style>",
             r0, r1, r2, r3, r4,
             palette_styles,
         ));
-
         //
         // layers defs
         // TODO: pre-encode this...
@@ -177,7 +179,7 @@ let distribution: Distribution =
             let mz2: usize = mz1+1;
             // render object
             let line: ByteArray = format!(
-                "<g style=\"transform:scale(1)translate({}px,{}px)\"><use href=\"#p{:x}\" class=\"p{} r r{}\"/><use href=\"#p{:x}\" class=\"p{} r r{} bl\"/><use href=\"#m1{:x}\" class=\"m{} r r{}\"/><use href=\"#m2{:x}\" class=\"m{} r r{}\"/></g>",
+                "<g style=\"transform:scale(1)translate({}px,{}px)\"><use href=\"#p{:x}\" class=\"p{} r r{} sh\"/><use href=\"#p{:x}\" class=\"p{} r r{} bl\"/><use href=\"#m1{:x}\" class=\"m{} r r{} sh\"/><use href=\"#m2{:x}\" class=\"m{} r r{}\"/></g>",
                 x, y,
                 (p1+1), pz1, ((i+0)%5),
                 (p2+1), pz2, ((i+1)%5),
@@ -195,9 +197,9 @@ let distribution: Distribution =
                 layer_3.append(@line);
             }
             // result.append(@format!("<g style=\"transform:scale(1)translate({}px,{}px)\">", x, y));
-            // result.append(@format!("<use href=\"#p{:x}\" class=\"p{} r r{}\"/>", (p1+1), pz1, ((i+0)%5)));
+            // result.append(@format!("<use href=\"#p{:x}\" class=\"p{} r r{}sh \"/>", (p1+1), pz1, ((i+0)%5)));
             // result.append(@format!("<use href=\"#p{:x}\" class=\"p{} r r{} bl\"/>", (p2+1), pz2, ((i+1)%5)));
-            // result.append(@format!("<use href=\"#m1{:x}\" class=\"m{} r r{}\"/>", (m1+1), mz1, ((i+2)%5)));
+            // result.append(@format!("<use href=\"#m1{:x}\" class=\"m{} r r{} sh\"/>", (m1+1), mz1, ((i+2)%5)));
             // result.append(@format!("<use href=\"#m2{:x}\" class=\"m{} r r{}\"/>", (m2+1), mz2, ((i+3)%5)));
             // result.append(@"</g>");
             i += 1;

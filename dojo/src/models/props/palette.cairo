@@ -7,6 +7,7 @@ pub enum Palette {
     Palette3,
     Palette4,
     Palette5,
+    Palette6,
 }
 
 
@@ -17,7 +18,7 @@ pub enum Palette {
 #[generate_trait]
 pub impl PaletteImpl of PaletteTrait {
     fn palette_count() -> u8 {
-        (5)
+        (6)
     }
     //---------------------------------------
     // generated from:
@@ -46,16 +47,15 @@ pub impl PaletteImpl of PaletteTrait {
     fn get_styles(self: @Palette) -> ByteArray {
         (match self {
             Palette::None     => "",
-            Palette::Palette1 => ".bg{fill:#000000;}.p0{fill:#903286;}.p1{fill:#ae3ed0;}.p2{fill:#d77bf7;}.p3{fill:#cfa7ec;}.p4{fill:#ece2fd;}.m0{fill:#6e2014;}.m1{fill:#a55921;}.m2{fill:#d18c32;}.m3{fill:#eeb441;}",
-            Palette::Palette2 => ".bg{fill:#000000;}.p0{fill:#903286;}.p1{fill:#ae3ed0;}.p2{fill:#d77bf7;}.p3{fill:#cfa7ec;}.p4{fill:#ece2fd;}.m0{fill:#6e2014;}.m1{fill:#a55921;}.m2{fill:#d18c32;}.m3{fill:#eeb441;}",
-            Palette::Palette3 => ".bg{fill:#000000;}.p0{fill:#903286;}.p1{fill:#ae3ed0;}.p2{fill:#d77bf7;}.p3{fill:#cfa7ec;}.p4{fill:#ece2fd;}.m0{fill:#6e2014;}.m1{fill:#a55921;}.m2{fill:#d18c32;}.m3{fill:#eeb441;}",
-            Palette::Palette4 => ".bg{fill:#000000;}.p0{fill:#903286;}.p1{fill:#ae3ed0;}.p2{fill:#d77bf7;}.p3{fill:#cfa7ec;}.p4{fill:#ece2fd;}.m0{fill:#6e2014;}.m1{fill:#a55921;}.m2{fill:#d18c32;}.m3{fill:#eeb441;}",
-            Palette::Palette5 => ".bg{fill:#000000;}.p0{fill:#903286;}.p1{fill:#ae3ed0;}.p2{fill:#d77bf7;}.p3{fill:#cfa7ec;}.p4{fill:#ece2fd;}.m0{fill:#6e2014;}.m1{fill:#a55921;}.m2{fill:#d18c32;}.m3{fill:#eeb441;}",
+            Palette::Palette1 => ".bg{fill:#020001;}.p0{fill:#90325B;}.p1{fill:#D03E80;}.p2{fill:#F77BAF;}.p3{fill:#ECA7CB;}.p4{fill:#FBDDEA;}.m0{fill:#732C2C;}.m1{fill:#A52135;}.m2{fill:#E9583E;}.m3{fill:#FBB451;}",
+            Palette::Palette2 => ".bg{fill:#020001;}.p0{fill:#540967;}.p1{fill:#7724AE;}.p2{fill:#BA39BC;}.p3{fill:#E26DFF;}.p4{fill:#DF92FD;}.m0{fill:#3b2628;}.m1{fill:#9b622a;}.m2{fill:#e0aa42;}.m3{fill:#f3cb45;}",
+            Palette::Palette3 => ".bg{fill:#000002;}.p0{fill:#313B73;}.p1{fill:#485799;}.p2{fill:#707DBE;}.p3{fill:#ACB9F1;}.p4{fill:#C0E8FF;}.m0{fill:#3b2628;}.m1{fill:#783C1A;}.m2{fill:#BB873E;}.m3{fill:#E4AF4D;}",
+            Palette::Palette4 => ".bg{fill:#000002;}.p0{fill:#3C40BB;}.p1{fill:#4D5CFC;}.p2{fill:#2B00FF;}.p3{fill:#4E69FF;}.p4{fill:#AC9AFF;}.m0{fill:#3b2628;}.m1{fill:#9B442A;}.m2{fill:#E08442;}.m3{fill:#F3EA45;}",
+            Palette::Palette5 => ".bg{fill:#020200;}.p0{fill:#AD842B;}.p1{fill:#F3C81B;}.p2{fill:#F0DC01;}.p3{fill:#FFF984;}.p4{fill:#FFFEE4;}.m0{fill:#3b2628;}.m1{fill:#9B442A;}.m2{fill:#E08442;}.m3{fill:#FBFFC9;}",
+            Palette::Palette6 => ".bg{fill:#020200;}.p0{fill:#6a0e03;}.p1{fill:#CA2E0F;}.p2{fill:#FF2A00;}.p3{fill:#FF892E;}.p4{fill:#FFB339;}.m0{fill:#72402F;}.m1{fill:#CD882F;}.m2{fill:#FCBB42;}.m3{fill:#FDF59A;}",
         })
     }
 }
-
-
 
 
 impl PaletteIntoByteArray of Into<Palette, ByteArray> {
@@ -67,6 +67,7 @@ impl PaletteIntoByteArray of Into<Palette, ByteArray> {
             Palette::Palette3   => "Palette3",
             Palette::Palette4   => "Palette4",
             Palette::Palette5   => "Palette5",
+            Palette::Palette6   => "Palette6",
         })
     }
 }
@@ -79,6 +80,7 @@ impl PaletteIntoU8 of Into<Palette, u8> {
             Palette::Palette3 => 3,
             Palette::Palette4 => 4,
             Palette::Palette5 => 5,
+            Palette::Palette6 => 6,
         }
     }
 }
@@ -91,6 +93,7 @@ impl U8IntoPalette of Into<u8, Palette> {
             3 => Palette::Palette3,
             4 => Palette::Palette4,
             5 => Palette::Palette5,
+            6 => Palette::Palette6,
             _ => Palette::None,
         }
     }
