@@ -5,26 +5,26 @@ import type { PropsWithChildren } from "react";
 import { dojoConfig } from "./dojoConfig";
 
 export default function StarknetProvider({ children }: PropsWithChildren) {
-    const { connectors } = usePredeployedAccounts({
-        rpc: dojoConfig.rpcUrl as string,
-        id: "katana",
-        name: "Katana",
-    });
+  const { connectors } = usePredeployedAccounts({
+    rpc: dojoConfig.rpcUrl as string,
+    id: "katana",
+    name: "Katana",
+  });
 
-    const provider = jsonRpcProvider({
-        rpc: () => ({ nodeUrl: dojoConfig.rpcUrl as string }),
-    });
+  const provider = jsonRpcProvider({
+    rpc: () => ({ nodeUrl: dojoConfig.rpcUrl as string }),
+  });
 
-    return (
-        <StarknetConfig
-            chains={[mainnet]}
-            provider={provider}
-            connectors={connectors}
-            explorer={voyager}
-            autoConnect
-        >
-            {/* @ts-ignore react version mismatch */}
-            {children}
-        </StarknetConfig>
-    );
+  return (
+    <StarknetConfig
+      chains={[mainnet]}
+      provider={provider}
+      connectors={connectors}
+      explorer={voyager}
+      autoConnect
+    >
+      {/* @ts-ignore react version mismatch */}
+      {children}
+    </StarknetConfig>
+  );
 }
