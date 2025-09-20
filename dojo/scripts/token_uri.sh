@@ -15,4 +15,4 @@ pushd $(dirname "$0")/..
 
 # sozo execute --world <WORLD_ADDRESS> <CONTRACT> <ENTRYPOINT>
 echo "> token_uri($TOKEN_ID)..."
-sozo call aster-token --world $WORLD_ADDRESS token_uri -v u256:$TOKEN_ID
+sozo -P $PROFILE call aster-token --world $WORLD_ADDRESS token_uri -v u256:$TOKEN_ID

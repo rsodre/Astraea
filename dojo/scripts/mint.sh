@@ -7,4 +7,4 @@ pushd $(dirname "$0")/..
 
 # sozo execute --world <WORLD_ADDRESS> <CONTRACT> <ENTRYPOINT>
 echo "> minting..."
-sozo execute aster-minter --world $WORLD_ADDRESS --wait mint $TOKEN_ADDRESS
+sozo -P $PROFILE execute aster-minter --world $WORLD_ADDRESS --wait mint

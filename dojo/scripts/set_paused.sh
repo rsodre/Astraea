@@ -15,5 +15,5 @@ pushd $(dirname "$0")/..
 
 # sozo execute --world <WORLD_ADDRESS> <CONTRACT> <ENTRYPOINT>
 echo "> new paused: $PAUSED"
-sozo execute aster-minter --world $WORLD_ADDRESS --wait set_paused $TOKEN_ADDRESS $PAUSED
+sozo -P $PROFILE execute aster-token --world $WORLD_ADDRESS --wait set_paused $PAUSED
 sozo -P $PROFILE model get aster-TokenConfig $TOKEN_ADDRESS

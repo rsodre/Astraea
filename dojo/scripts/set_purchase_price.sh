@@ -27,5 +27,5 @@ export STRK_ADDRESS=0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f428
 pushd $(dirname "$0")/..
 
 # sozo execute --world <WORLD_ADDRESS> <CONTRACT> <ENTRYPOINT>
-sozo execute aster-minter --world $WORLD_ADDRESS --wait set_purchase_price $TOKEN_ADDRESS $STRK_ADDRESS 100
+sozo -P $PROFILE execute aster-minter --world $WORLD_ADDRESS --wait set_purchase_price $STRK_ADDRESS 100
 sozo -P $PROFILE model get aster-TokenConfig $TOKEN_ADDRESS

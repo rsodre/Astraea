@@ -15,4 +15,4 @@ pushd $(dirname "$0")/..
 
 # sozo execute --world <WORLD_ADDRESS> <CONTRACT> <ENTRYPOINT>
 echo "> update_token_metadata($TOKEN_ID)..."
-sozo execute aster-token --world $WORLD_ADDRESS --wait update_token_metadata u256:$TOKEN_ID
+sozo -P $PROFILE execute aster-token --world $WORLD_ADDRESS --wait update_token_metadata u256:$TOKEN_ID
