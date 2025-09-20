@@ -1,7 +1,7 @@
 #
 # torii config for profile [sepolia]
 #
-world_address = "0xeb59de33e9401040ed51ba6c0ce429d68a8cc3efba6f3b506a39d25de946f2"
+world_address = "0x07774946aab21c0b2b2484aa9a6f03bb64fd33550bb2cc8b22d46922b49af17c"
 rpc = "https://api.cartridge.gg/x/starknet/sepolia"
 
 [events]
@@ -17,4 +17,5 @@ world_block = 799759    # Karat deployment block
 contracts = [
   "erc721:0x007983f8670a1ad69e289ba6ab8fff66ce92d4e7a560be51d977081f1317f614", # 512karat
   "erc721:0x070ea289f608f37e2ee38e8a5a5e1cd9203e7666db36714d20382b73302308e5", # 512karat-gen2
+  "erc721:0x05bb54b047419c975c3be4e2cd5ad3df6084f5df96008182c214a78bd694f61e", # Aster
 ]

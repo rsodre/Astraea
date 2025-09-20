@@ -26,6 +26,7 @@ rpc_url = "https://api.cartridge.gg/x/starknet/sepolia" # or env: STARKNET_RPC_U
 # private_key = ""      # env: DOJO_PRIVATE_KEY
 world_address = "0x7774946aab21c0b2b2484aa9a6f03bb64fd33550bb2cc8b22d46922b49af17c"
 # world_block = 799759    # Karat deployment block
+world_block = 2148277    # Aster sepolia deployment block
 
 #--------------------------
 # namespaces
