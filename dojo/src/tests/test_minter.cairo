@@ -45,12 +45,12 @@ mod tests {
 
     fn _assert_can_mint(sys: TestSystems, prefix: ByteArray) {
         let recipient: ContractAddress = tester::get_impersonator();
-        let can_mint: Option<ByteArray> = sys.minter.can_mint(recipient);
+        let can_mint: Option<ByteArray> = sys.minter.can_mint(recipient, recipient);
         assert!(can_mint.is_none(), "[{}]: can_mint: {}", prefix, can_mint.unwrap());
     }
     fn _assert_cannot_mint(sys: TestSystems, reason: ByteArray) {
         let recipient: ContractAddress = tester::get_impersonator();
-        let can_mint: Option<ByteArray> = sys.minter.can_mint(recipient);
+        let can_mint: Option<ByteArray> = sys.minter.can_mint(recipient, recipient);
         assert!(can_mint.is_some(), "[{}]: cannot_mint (can mint)", reason);
         assert_eq!(can_mint.unwrap(), reason, "cannot_mint (wrong reason)");
     }

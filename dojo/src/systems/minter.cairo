@@ -3,7 +3,7 @@ use starknet::{ContractAddress};
 #[starknet::interface]
 pub trait IMinter<TState> {
     fn get_price(self: @TState) -> (ContractAddress, u128);
-    fn can_mint(self: @TState, recipient: ContractAddress) -> Option<ByteArray>;
+    fn can_mint(self: @TState, spender: ContractAddress, recipient: ContractAddress) -> Option<ByteArray>;
     fn mint(ref self: TState) -> u128;
     fn mint_to(ref self: TState, recipient: ContractAddress) -> u128;
 
@@ -79,7 +79,7 @@ pub mod minter {
             (token_config.purchase_coin_address, token_config.purchase_price_wei)
         }
 
-        fn can_mint(self: @ContractState, recipient: ContractAddress) -> Option<ByteArray> {
+        fn can_mint(self: @ContractState, spender: ContractAddress, recipient: ContractAddress) -> Option<ByteArray> {
             let mut store: Store = StoreTrait::new(self.world_default());
             let token_config: TokenConfig = TokenConfigTrait::get(@store);
             let token_dispatcher = store.world.token_dispatcher();
@@ -91,7 +91,11 @@ pub mod minter {
                 (Option::Some("Minted maximum"))
             } else if (token_dispatcher.available_supply().is_zero()) {
                 (Option::Some("Unavailable"))
-            } else if (token_config.purchase_coin_dispatcher().balance_of(starknet::get_caller_address()) < token_config.purchase_price_wei.into()) {
+            } else if (
+                token_config.purchase_coin_address.is_non_zero() &&
+                token_config.purchase_price_wei.is_non_zero() &&
+                token_config.purchase_coin_dispatcher().balance_of(spender) < token_config.purchase_price_wei.into()
+            ) {
                 (Option::Some("Insufficient balance"))
             } else {
                 // can mint!
