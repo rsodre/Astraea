@@ -33,14 +33,14 @@ pub mod tester {
     // https://github.com/starkware-libs/cairo/blob/main/corelib/src/starknet/testing.cairo
     //
 
-    pub fn ZERO()      -> ContractAddress { starknet::contract_address_const::<0x0>() }
-    pub fn OWNER()     -> ContractAddress { starknet::contract_address_const::<0x1>() } // mock owner of duelists 1-2
-    pub fn OTHER()     -> ContractAddress { starknet::contract_address_const::<0x3>() } // mock owner of duelists 3-4
-    pub fn BUMMER()    -> ContractAddress { starknet::contract_address_const::<0x5>() } // mock owner of duelists 5-6
-    pub fn RECIPIENT() -> ContractAddress { starknet::contract_address_const::<0x222>() }
-    pub fn SPENDER()   -> ContractAddress { starknet::contract_address_const::<0x333>() }
-    pub fn TREASURY()  -> ContractAddress { starknet::contract_address_const::<0x444>() }
-    pub fn XYZ()       -> ContractAddress { starknet::contract_address_const::<0x1231278612>() }
+    pub fn ZERO()      -> ContractAddress { 0x0.try_into().unwrap() }
+    pub fn OWNER()     -> ContractAddress { 0x1.try_into().unwrap() } // mock owner of duelists 1-2
+    pub fn OTHER()     -> ContractAddress { 0x3.try_into().unwrap() } // mock owner of duelists 3-4
+    pub fn BUMMER()    -> ContractAddress { 0x5.try_into().unwrap() } // mock owner of duelists 5-6
+    pub fn RECIPIENT() -> ContractAddress { 0x222.try_into().unwrap() }
+    pub fn SPENDER()   -> ContractAddress { 0x333.try_into().unwrap() }
+    pub fn TREASURY()  -> ContractAddress { 0x444.try_into().unwrap() }
+    pub fn XYZ()       -> ContractAddress { 0x1231278612.try_into().unwrap() }
 
 
     // set_contract_address : to define the address of the calling contract,
@@ -79,15 +79,15 @@ pub mod tester {
         
         let mut resources: Array<TestResource> = array![
             // contracts
-            TestResource::Contract(aster::systems::token::token::TEST_CLASS_HASH),
-            TestResource::Contract(aster::systems::minter::minter::TEST_CLASS_HASH),
-            TestResource::Contract(aster::tests::mock_coin::mock_coin::TEST_CLASS_HASH),
-            TestResource::Contract(aster::tests::mock_token::mock_token::TEST_CLASS_HASH),
+            TestResource::Contract(aster::systems::token::token::TEST_CLASS_HASH.into()),
+            TestResource::Contract(aster::systems::minter::minter::TEST_CLASS_HASH.into()),
+            TestResource::Contract(aster::tests::mock_coin::mock_coin::TEST_CLASS_HASH.into()),
+            TestResource::Contract(aster::tests::mock_token::mock_token::TEST_CLASS_HASH.into()),
             // models
-            TestResource::Model(aster::models::token_config::m_TokenConfig::TEST_CLASS_HASH),
-            TestResource::Model(aster::models::seed::m_Seed::TEST_CLASS_HASH),
+            TestResource::Model(aster::models::token_config::m_TokenConfig::TEST_CLASS_HASH.into()),
+            TestResource::Model(aster::models::seed::m_Seed::TEST_CLASS_HASH.into()),
             // events
-            TestResource::Event(aster::models::events::e_TokenMintedEvent::TEST_CLASS_HASH),
+            TestResource::Event(aster::models::events::e_TokenMintedEvent::TEST_CLASS_HASH.into()),
         ];
 
         let namespace_def = NamespaceDef {

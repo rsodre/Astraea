@@ -5,7 +5,7 @@ pub mod CONST {
     pub const ONE_DAY: u64 = 60 * 60 * 24;
 }
 
-pub fn ZERO() -> ContractAddress { starknet::contract_address_const::<0x0>() }
+pub fn ZERO() -> ContractAddress { 0x0.try_into().unwrap() }
 
 #[inline(always)]
 pub fn WEI(value: u128) -> u128 {

@@ -7,6 +7,7 @@ version = "1.0.0"
 dependencies = [
  "dojo",
  "dojo_cairo_test",
+ "dojo_macros",
  "nft_combo",
  "openzeppelin_introspection",
  "openzeppelin_token",
@@ -14,24 +15,24 @@ dependencies = [
 
 [[package]]
 name = "dojo"
-version = "1.6.1"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.6.1#a4f9445cf925e999d97038f596806ec307981a9b"
+version = "1.7.0-alpha.4"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.7.0-alpha.4#7b78108ce7aea7753c0a9e34cb83465a76bbf2e4"
 dependencies = [
- "dojo_plugin",
+ "dojo_macros",
 ]
 
 [[package]]
 name = "dojo_cairo_test"
-version = "1.6.1"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.6.1#a4f9445cf925e999d97038f596806ec307981a9b"
+version = "1.7.0-alpha.4"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.7.0-alpha.4#7b78108ce7aea7753c0a9e34cb83465a76bbf2e4"
 dependencies = [
  "dojo",
 ]
 
 [[package]]
-name = "dojo_plugin"
-version = "2.10.1"
-source = "git+https://github.com/dojoengine/dojo?tag=v1.6.1#a4f9445cf925e999d97038f596806ec307981a9b"
+name = "dojo_macros"
+version = "1.7.0-alpha.4"
+source = "git+https://github.com/dojoengine/dojo?tag=v1.7.0-alpha.4#7b78108ce7aea7753c0a9e34cb83465a76bbf2e4"
 
 [[package]]
 name = "graffiti"
@@ -41,7 +42,7 @@ source = "git+https://github.com/rsodre/graffiti?rev=url#e8b0854798ebbcebde504ea
 [[package]]
 name = "nft_combo"
 version = "1.1.0"
-source = "git+https://github.com/underware-gg/cairo-nft-combo?tag=v1.1.0#ce8a84e61c16df2e24cbccb9b449f8c8a574fc05"
+source = "git+https://github.com/underware-gg/cairo-nft-combo?branch=scarb_2.12.2#571a5bae95d734179ef9386036284d0b19e529fb"
 dependencies = [
  "graffiti",
  "openzeppelin_introspection",
