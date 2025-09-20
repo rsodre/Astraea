@@ -24,8 +24,8 @@ chain_id = "SN_MAIN"
 rpc_url = "https://api.cartridge.gg/x/starknet/mainnet" # or env: STARKNET_RPC_URL
 # account_address = ""  # env: DOJO_ACCOUNT_ADDRESS
 # private_key = ""      # env: DOJO_PRIVATE_KEY
-world_address = "0x6c7784c9326bbec89aed58b6421d3d54ff46f7e458e080956dcdb71c5ca9867"
-world_block = 722385    # Karat deployment block
+world_address = "0x7774946aab21c0b2b2484aa9a6f03bb64fd33550bb2cc8b22d46922b49af17c"
+# world_block = 722385    # Karat deployment block
 
 #--------------------------
 # namespaces
