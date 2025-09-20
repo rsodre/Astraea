@@ -1,0 +1,16 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "encode-defs": "node ./bin/encode-defs.js",
+    "encode-test": "node ./bin/encode-test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "packageManager": "pnpm@10.10.0",
+  "dependencies": {
+  }
+}
