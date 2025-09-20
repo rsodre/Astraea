@@ -70,7 +70,7 @@ let distribution: Distribution =
         let r3: u16 = props.seeder.get_next_u16(360);
         let r4: u16 = props.seeder.get_next_u16(360);
         result.append(@format!(
-            "<style>.bl{{mix-blend-mode:screen;}}.sh{{filter:drop-shadow(1px 1px 2px #00000080);}}.r{{transform-origin:center;transform-box:fill-box;}}.r0{{transform:rotate({}deg);}}.r1{{transform:rotate({}deg);}}.r2{{transform:rotate({}deg);}}.r3{{transform:rotate({}deg);}}.r4{{transform:rotate({}deg);}}{}</style>",
+            "<style>.bl{{mix-blend-mode:screen;}}.r{{transform-origin:center;transform-box:fill-box;}}.r0{{transform:rotate({}deg);}}.r1{{transform:rotate({}deg);}}.r2{{transform:rotate({}deg);}}.r3{{transform:rotate({}deg);}}.r4{{transform:rotate({}deg);}}{}</style>",
             r0, r1, r2, r3, r4,
             palette_styles,
         ));
