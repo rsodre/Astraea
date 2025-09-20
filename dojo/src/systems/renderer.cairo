@@ -172,7 +172,8 @@ let distribution: Distribution =
             let m1: u8 = props.seeder.get_next_u8(M1S);
             let m2: u8 = props.seeder.get_next_u8(M2S);
             // depth color
-            let z: usize = props.seeder.get_next_u8_usize(4);
+            let mut z: usize = props.seeder.get_next_u8_usize(4);
+            if (density == 1 && z == 0) { z += 1; }
             let pz1: usize = z;
             let pz2: usize = pz1+1;
             let mz1: usize = if(z==0) {0} else if(z==3) {2} else {z-(i%2)};

@@ -15,7 +15,6 @@ pub struct AsterProps {
     pub additional_metadata: Span<Attribute>,
 }
 
-
 #[derive(Drop, Copy, PartialEq)]
 pub enum Distribution {
     Order,
@@ -31,6 +30,7 @@ impl DistributionIntoByteArray of Into<Distribution, ByteArray> {
         })
     }
 }
+
 
 //---------------------------------------
 // Traits
@@ -48,10 +48,19 @@ pub impl AsterPropsImpl of AsterPropsTrait {
         // seeded props
         let mut seeder: Seeder = SeederTrait::new((*seed.seed).into(), *seed.token_id);
         let palette: Palette = seeder._generate_palette();
-        let density: usize = seeder._generate_density();
-        let distribution: Distribution =
-            if (density == 1) {Distribution::Order}
-            else {seeder._generate_distribution()};
+        let density: usize = (
+            if (seeder.token_id == 1) {1}
+            else {seeder._generate_density()}
+        );
+        let distribution: Distribution = (
+            if (seeder.token_id == 1) {Distribution::Order}
+            else {
+                let options: Span<Distribution> =
+                    if (density == 1) {array![Distribution::Order, Distribution::Spread].span()}
+                    else {array![Distribution::Order, Distribution::Spread, Distribution::Chaos, Distribution::Chaos].span()};
+                (seeder._generate_distribution(options))
+            }
+        );
         //
         // attributes (optional)
         let mut attributes: Span<Attribute> = (
@@ -107,8 +116,7 @@ pub impl AsterPropsImpl of AsterPropsTrait {
         let num: u8 = self.get_next_u8(options.len().try_into().unwrap());
         (*options.at(num.into()))
     }
-    fn _generate_distribution(ref self: Seeder) -> Distribution {
-        let options: Span<Distribution> = array![Distribution::Order, Distribution::Chaos, Distribution::Chaos].span();
+    fn _generate_distribution(ref self: Seeder, options: Span<Distribution>) -> Distribution {
         let num: u8 = self.get_next_u8(options.len().try_into().unwrap());
         (*options.at(num.into()))
     }
