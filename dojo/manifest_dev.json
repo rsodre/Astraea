@@ -1479,8 +1479,8 @@
   },
   "contracts": [
     {
-      "address": "0x12829ac80a41ababbaa5f211ae115941d238117ccefc6b1dfa3418aef9b23a8",
-      "class_hash": "0x31399d44da8edd37b180f426927badf5551fcd6378ef4c69579448873f6ab4d",
+      "address": "0x6d91175b437687999a0e3db7572ee86739461375b2479cf0148028e71daaf8c",
+      "class_hash": "0x329c4bec6985694112ed5e2e2bdee0249b241a78a9c335a907e63691816341c",
       "abi": [
         {
           "type": "impl",
@@ -1586,6 +1586,10 @@
               "type": "function",
               "name": "can_mint",
               "inputs": [
+                {
+                  "name": "spender",
+                  "type": "core::starknet::contract_address::ContractAddress"
+                },
                 {
                   "name": "recipient",
                   "type": "core::starknet::contract_address::ContractAddress"
@@ -1766,8 +1770,8 @@
       ]
     },
     {
-      "address": "0x489b1a1132948b072d78602cd25aa773f24e97c44f1eab654599d964d7051bf",
-      "class_hash": "0x1ff03a109581a1d58a7614ebc1df1235fd61fb9799d9b000e784f0d93b2f579",
+      "address": "0x1c76443dff2981228a7a53746e2e3bd24a67a06d9ed3f5a6097469665edcf3e",
+      "class_hash": "0x7162349cf13cb57acab0b8ee8250b9d661e65fc7a80acd3cc91d5a820038422",
       "abi": [
         {
           "type": "impl",
