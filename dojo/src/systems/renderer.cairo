@@ -3,7 +3,7 @@ use aster::models::{
     seed::{SeederTrait},
     props::{
         props::{AsterProps, Distribution},
-        palette::{Palette, PaletteTrait},
+        palette::{PaletteTrait},
     },
 };
 use aster::utils::math::{SafeMathU32};
@@ -24,17 +24,6 @@ pub impl AsterRendererImpl of AsterRendererTrait {
         let palette_styles: ByteArray = props.palette.get_styles();
         let distribution: Distribution = props.distribution;
         let density: usize = props.density;
-//-------
-// DEBUG
-let _pnum: u8 = ((props.token_id-1) / 6).try_into().unwrap() + 1;
-let _palette: Palette = _pnum.into();
-let palette_styles: ByteArray = _palette.get_styles();
-let density: usize = (((props.token_id-1) % 6) + 1).try_into().unwrap();
-let distribution: Distribution =
-    if (props.token_id <= 6) {Distribution::Order}
-    else if (props.token_id <= 12) {Distribution::Spread}
-    else {Distribution::Chaos};
-//-------
         let VIEWPORT_W: usize = (SIZE * density);
         let VIEWPORT_H: usize = (SIZE * density);
 
@@ -51,19 +40,6 @@ let distribution: Distribution =
         ));
         //
         // styles
-        // result.append(@format!(
-        //     "<style>.bl{{mix-blend-mode:screen;}}.bg{{fill:{};}}.p0{{fill:{};}}.p1{{fill:{};}}.p2{{fill:{};}}.p3{{fill:{};}}.p4{{fill:{};}}.m0{{fill:{};}}.m1{{fill:{};}}.m2{{fill:{};}}.m3{{fill:{};}}</style>",
-        //         color_bg,
-        //         colors.at(0),
-        //         colors.at(1),
-        //         colors.at(2),
-        //         colors.at(3),
-        //         colors.at(4),
-        //         colors.at(5),
-        //         colors.at(6),
-        //         colors.at(7),
-        //         colors.at(8),
-        // ));
         let r0: u16 = props.seeder.get_next_u16(360);
         let r1: u16 = props.seeder.get_next_u16(360);
         let r2: u16 = props.seeder.get_next_u16(360);
@@ -76,7 +52,7 @@ let distribution: Distribution =
         ));
         //
         // layers defs
-        // TODO: pre-encode this...
+        // TODO: pre-encode this if too much...
         result.append(@"<defs>");
         result.append(@"<path id=\"p0\" d=\"M62.8,37.5c-7.8-3.3,2.5-2.1,1.2-6.4c-1.2-9.2-5.9-5.8-13.7-5.2c4.4-1.5,15.6-12.4,5.6-8.6 c-3.5,1,2.5-9.9-8.1-1.7c1.1-4.7-3.6-4.5-5.7-1.2c0.1-8.9-6.1-10.6-6.8-0.7c-0.4-8.2-7.7-5-5.8,1c-3.5-9.8-10.6-9.2-6.1,1.8 c-6.8-6.5-10.2-0.4-4.4,5.1c-5.8-3.8-13.1,0.3-5.4,5.3c1.2,0.5,1.3,1,0,0.9c-6.4,1-6.7,4.7-0.9,6.7c-5.2,1.9-4.7,7.5,1.6,6 c-3.4,1.8-5.6,6.1,0.1,6.3c-3.8,8,3.8,6.7,7,3c-2.9,3.7-1.6,11.6,3.3,6c1-0.8,3.8-6.1,3.8-4.1c-0.2,2,1,11.1,4.5,8.3 c1.3-1,1.7,1.2,2.9,0.8c3.7,1.3,2.1-7.1,4.3-3.8c5.8,9.5,3.9-6.2,2.2-9.8c3,2.8,11.4,14.7,11.7,5c-0.2-1.3,0.7-1.1,1.5-1 c7,0.5-3.5-8.8-5.4-10.6C53.4,40.7,69.5,44.2,62.8,37.5z\"/>");
         result.append(@"<path id=\"p1\" d=\"M54.3,24.8c0.7-3.5,7.1-2.3,6-6.5c-0.4-1.6-2.5-2.1-3.6-1.2c0.3,0.4-0.4-0.2,0.1-0.2 c4.1-3.1-5.8-5.9-8.3-3.9c-0.9,0.4-1.7,1.3-2.8,0.4c-5.4-3.7-6.9,3.2-9.9,4.6c-0.6-14.9-6.7-6.2-6,3.5c-2.8-4.6-2.9-11.4-7.4-13.8 c-1.5,0,0,2.2-1.5,2.7c-1.8-2.2-5.7-2.8-3.8,1c5.5,15.9,2.2,5.6-6.7,7.3c2.5,1.8,4.9,3.2,7.1,5.5c-12.2-1.6,2,4.1,5,7.3 c-10.1-3.1-15.6,0.7-2.1,3.4c-6.3,0.9-9.2,9.2-1,5.5c-0.2,1.4-4.2,8.1,2.6,6.7c3.3-1.3-0.7,13.3,6.9,5.3c0.7-0.1,0.2-2.7,1.8-0.8 c0.2,2.5-3.9,5.3,0.8,5.7c2.4-0.1,2.6,4.5,5.4,1.9c3.3-3.1,0.9-5.3,0.9-9.2c2.8,8.6,12.4,23.2,6.2,3.3c2.1,2,3.6,3.4,5,4.8 c2.7-3,2-5.5,0.2-7.8c9.6,5.4,5.4-7.4-0.2-9.5c13.8,2.9,12.8-5.8,0.6-7.3c7.1-0.1,13.6-6.2,2.3-6.1C52.9,26.6,53.7,25.8,54.3,24.8z\"/>");
@@ -193,12 +169,6 @@ let distribution: Distribution =
             } else {
                 layer_3.append(@line);
             }
-            // result.append(@format!("<g style=\"transform:scale(1)translate({}px,{}px)\">", x, y));
-            // result.append(@format!("<use href=\"#p{:x}\" class=\"p{} r r{}sh \"/>", (p1+1), pz1, ((i+0)%5)));
-            // result.append(@format!("<use href=\"#p{:x}\" class=\"p{} r r{} bl\"/>", (p2+1), pz2, ((i+1)%5)));
-            // result.append(@format!("<use href=\"#m1{:x}\" class=\"m{} r r{} sh\"/>", (m1+1), mz1, ((i+2)%5)));
-            // result.append(@format!("<use href=\"#m2{:x}\" class=\"m{} r r{}\"/>", (m2+1), mz2, ((i+3)%5)));
-            // result.append(@"</g>");
             i += 1;
         };
         result.append(@layer_0);
