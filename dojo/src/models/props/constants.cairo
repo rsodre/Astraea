@@ -1,6 +1,6 @@
 // default settings
 pub const MAX_SUPPLY: u256 = 128;
-pub const MAX_PER_WALLET: u8 = 3;
+pub const MAX_PER_WALLET: u8 = 2;
 pub const DEFAULT_STRK_PRICE_ETH: u8 = 200;
 pub const DEFAULT_ROYALTY: u128 = 250;
 

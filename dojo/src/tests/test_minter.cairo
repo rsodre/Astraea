@@ -94,38 +94,36 @@ mod tests {
     fn test_mint_ok() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
         assert_eq!(sys.token.total_supply(), 0, "supply = 0");
-        // mint...
-        _approve(sys, OTHER(), 4);
+        // mint #1
+        _approve(sys, OTHER(), 3);
         tester::impersonate(OTHER());
         _assert_can_mint(sys, "other_mint_1");
         let token_id_1: u128 = sys.minter.mint();
         let seed_1: felt252 = _assert_minted(sys, token_id_1, 1, OTHER(), "TOKEN_1");
+        // mint #2
         _assert_can_mint(sys, "other_mint_1");
         let token_id_2: u128 = sys.minter.mint();
         let seed_2: felt252 = _assert_minted(sys, token_id_2, 2, OTHER(), "TOKEN_2");
-        _assert_can_mint(sys, "other_mint_1");
-        let token_id_3: u128 = sys.minter.mint();
-        let seed_3: felt252 = _assert_minted(sys, token_id_3, 3, OTHER(), "TOKEN_3");
         _assert_cannot_mint(sys, "Minted maximum");
         assert_ne!(seed_1, 0, "seed_1_zero");
         assert_ne!(seed_2, 0, "seed_2_zero");
-        assert_ne!(seed_3, 0, "seed_3_zero");
-        assert_ne!(seed_1, seed_2, "seed_1_2");
-        assert_ne!(seed_2, seed_3, "seed_2_3");
+        assert_ne!(seed_2, seed_1, "seed_2_1");
         //
         // mint to... 
         tester::impersonate(OTHER());
-        let token_id_4: u128 = sys.minter.mint_to(BUMMER());
-        let _seed_1: felt252 = _assert_minted(sys, token_id_4, 4, BUMMER(), "TOKEN_4");
-        // mint...
-        _approve(sys, BUMMER(), 2);
+        let token_id_3: u128 = sys.minter.mint_to(BUMMER());
+        let seed_3: felt252 = _assert_minted(sys, token_id_3, 3, BUMMER(), "TOKEN_3");
+        assert_ne!(seed_3, 0, "seed_3_zero");
+        assert_ne!(seed_3, seed_2, "seed_3_2");
+        // mint #4
+        _approve(sys, BUMMER(), 1);
         tester::impersonate(BUMMER());
         _assert_can_mint(sys, "bummer_mint_2");
-        let token_id_5: u128 = sys.minter.mint();
-        let _seed_5: felt252 = _assert_minted(sys, token_id_5, 5, BUMMER(), "TOKEN_5");
-        _assert_can_mint(sys, "bummer_mint_3");
-        let token_id_6: u128 = sys.minter.mint();
-        let _seed_6: felt252 = _assert_minted(sys, token_id_6, 6, BUMMER(), "TOKEN_6");
+        let token_id_4: u128 = sys.minter.mint();
+        let seed_4: felt252 = _assert_minted(sys, token_id_4, 4, BUMMER(), "TOKEN_4");
+        assert_ne!(seed_4, 0, "seed_4_zero");
+        assert_ne!(seed_4, seed_3, "seed_4_3");
+        // no more..
         _assert_cannot_mint(sys, "Minted maximum");
     }
 
