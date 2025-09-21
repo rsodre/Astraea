@@ -45,7 +45,7 @@ width="1200" height="1200" viewBox="0 0 140 140">
 .m3{fill:#E4AF4D;} -->
 
 <!-- Palette 4: AZUL -->
-.bg{fill:#000002;}
+<!-- .bg{fill:#000002;}
 .p0{fill:#3C40BB;}
 .p1{fill:#4D5CFC;}
 .p2{fill:#2B00FF;}
@@ -54,7 +54,7 @@ width="1200" height="1200" viewBox="0 0 140 140">
 .m0{fill:#3b2628;}
 .m1{fill:#9B442A;}
 .m2{fill:#E08442;}
-.m3{fill:#F3EA45;}
+.m3{fill:#F3EA45;} -->
 
 <!-- Palette 5: AMARELO -->
 <!-- .bg{fill:#020200;}
@@ -69,16 +69,17 @@ width="1200" height="1200" viewBox="0 0 140 140">
 .m3{fill:#FBFFC9;} -->
 
 <!-- Palette 6: NANANJA -->
-<!-- .bg{fill:#020200;}
+.bg{fill:#020200;}
 .p0{fill:#6a0e03;}
-.p1{fill:#CA2E0F;}
-.p2{fill:#FF2A00;}
-.p3{fill:#FF892E;}
-.p4{fill:#FFB339;}
+.p1{fill:#CA0F0F;}
+.p2{fill:#FF0000;}
+.p3{fill:#FF2E2E;}
+.p4{fill:#FFB886;}
 .m0{fill:#72402F;}
 .m1{fill:#CD882F;}
 .m2{fill:#FCBB42;}
-.m3{fill:#FDF59A;} -->
+.m3{fill:#FDF59A;}
+
 
 
 
