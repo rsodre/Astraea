@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "encode-images": "node ./bin/encode-images.js",
     "encode-defs": "node ./bin/encode-defs.js",
     "encode-test": "node ./bin/encode-test.js"
   },
