@@ -10,7 +10,7 @@ fi
 
 # initialize argument variables
 export CLIENT_GEN_PATH="../client/src/generated"
-export EXPORT_MANIFEST_PATH="../../../CC/cc-dapp-v2/web/src/networks/generated/aster"
+export EXPORT_MANIFEST_PATH="../../../CC/cc-dapp-v2/web/src/networks/generated/astraea"
 export PROFILE=
 export ARG_BINDINGS=
 export ARG_OFFLINE=
