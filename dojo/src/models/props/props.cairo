@@ -112,7 +112,7 @@ pub impl AsterPropsImpl of AsterPropsTrait {
         (num.into())
     }
     fn _generate_density(ref self: Seeder) -> usize {
-        let options: Span<usize> = array![1, 2, 2, 3, 3, 4, 4, 5, 5, 6].span();
+        let options: Span<usize> = array![1, 2, 3, 4, 5, 6].span();
         let num: u8 = self.get_next_u8(options.len().try_into().unwrap());
         (*options.at(num.into()))
     }
