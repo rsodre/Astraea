@@ -65,6 +65,9 @@ echo ">>> Copying manifest [$MANIFEST_FILE_PATH] to [$CLIENT_GEN_PATH/]"
 mkdir -p $CLIENT_GEN_PATH
 cp $MANIFEST_FILE_PATH $CLIENT_GEN_PATH/
 ls -l $CLIENT_GEN_PATH
+echo ">>> Copying manifest [$MANIFEST_FILE_PATH] to [$EXPORT_MANIFEST_PATH/]"
+cp $MANIFEST_FILE_PATH $EXPORT_MANIFEST_PATH/
+ls -l $EXPORT_MANIFEST_PATH
 echo "👍"
 
 #------------------

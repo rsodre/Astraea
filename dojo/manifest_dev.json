@@ -3,7 +3,7 @@
     "class_hash": "0x57994b6a75fad550ca18b41ee82e2110e158c59028c4478109a67965a0e5b1e",
     "address": "0x7774946aab21c0b2b2484aa9a6f03bb64fd33550bb2cc8b22d46922b49af17c",
     "seed": "aster",
-    "name": "Aster (Starktember 2025)",
+    "name": "Astraea (Starktember 2025)",
     "entrypoints": [
       "uuid",
       "set_metadata",
@@ -1479,8 +1479,8 @@
   },
   "contracts": [
     {
-      "address": "0x6d91175b437687999a0e3db7572ee86739461375b2479cf0148028e71daaf8c",
-      "class_hash": "0x329c4bec6985694112ed5e2e2bdee0249b241a78a9c335a907e63691816341c",
+      "address": "0x4851d9a0912b6c4b964aeb11207ec2b90938e8136ee9efe9b55ab3a74839579",
+      "class_hash": "0x1a572620316e8021ff05e9b02ab75df336fca11525a0df7824a43532cfc84be",
       "abi": [
         {
           "type": "impl",
@@ -1770,8 +1770,8 @@
       ]
     },
     {
-      "address": "0x1c76443dff2981228a7a53746e2e3bd24a67a06d9ed3f5a6097469665edcf3e",
-      "class_hash": "0x7162349cf13cb57acab0b8ee8250b9d661e65fc7a80acd3cc91d5a820038422",
+      "address": "0x311e0758c6e8edf129ec41bba37b1c9dd69c862c545cfb16110955721949096",
+      "class_hash": "0x4993c5b4f48f67858332bc2547d0b5ace6602866b895d8bfd66d4b0041aa21e",
       "abi": [
         {
           "type": "impl",
