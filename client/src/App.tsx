@@ -99,7 +99,7 @@ const TokenImage = ({
             onClick={() => setTokenId?.(tokenId)}
           />
         </AspectRatio>
-        <Text size='1' color='gray'>ASTER#{tokenId}</Text>
+        <Text size='1' color='gray'>ASTRAEA#{tokenId}</Text>
       </Flex>
     </Box>
   );

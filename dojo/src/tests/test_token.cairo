@@ -128,7 +128,7 @@ println!("___contract_uri():[{}]", uri);
     }
 
     #[test]
-    #[should_panic(expected:('ASTER: caller is not owner','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('ASTRAEA: caller is not owner','ENTRYPOINT_FAILED'))]
     fn test_admin_set_paused_not_minter() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
         tester::impersonate(OTHER());
@@ -148,7 +148,7 @@ println!("___contract_uri():[{}]", uri);
     }
 
     #[test]
-    #[should_panic(expected:('ASTER: caller is not owner','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('ASTRAEA: caller is not owner','ENTRYPOINT_FAILED'))]
     fn test_admin_set_reserved_supply_not_owner() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
         tester::impersonate(OTHER());

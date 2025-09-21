@@ -128,8 +128,8 @@ pub mod token {
     use aster::models::props::{constants};
 
     mod Errors {
-        pub const CALLER_IS_NOT_OWNER: felt252      = 'ASTER: caller is not owner';
-        pub const CALLER_IS_NOT_MINTER: felt252     = 'ASTER: caller is not minter';
+        pub const CALLER_IS_NOT_OWNER: felt252      = 'ASTRAEA: caller is not owner';
+        pub const CALLER_IS_NOT_MINTER: felt252     = 'ASTRAEA: caller is not minter';
     }
 
     fn dojo_init(ref self: ContractState,

@@ -5,10 +5,10 @@ pub const DEFAULT_STRK_PRICE_ETH: u8 = 200;
 pub const DEFAULT_ROYALTY: u128 = 250;
 
 // token metadata
-pub fn TOKEN_NAME() -> ByteArray {"Aster"}
-pub fn TOKEN_SYMBOL() -> ByteArray {"ASTER"}
+pub fn TOKEN_NAME() -> ByteArray {"Astraea"}
+pub fn TOKEN_SYMBOL() -> ByteArray {"ASTRAEA"}
 // contract metadata
-pub fn METADATA_DESCRIPTION() -> ByteArray {"Aster is the september flower, from the greek word for Star, symbolizing love, patience, wisdom, and faith. Seeded with love for Starktember 2025."}
+pub fn METADATA_DESCRIPTION() -> ByteArray {"The greek goddess Astraea wept when she looked up at the night sky and saw that there were not enough stars. As her tears fell to Earth, they turned into the star-shaped flowers that bear her name. Aster is the september flower, after the Greek word for Star, symbolizing love, patience, wisdom, faith, and justice. Seeded with love on Starknet for Starktember 2025."}
 pub fn EXTERNAL_LINK() -> ByteArray {"https://collect-code.com"}
 
 pub fn BANNER_IMAGE() -> ByteArray {

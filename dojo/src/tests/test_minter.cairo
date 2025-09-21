@@ -82,7 +82,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected:('ASTER: caller is not minter','ENTRYPOINT_FAILED'))]
+    #[should_panic(expected:('ASTRAEA: caller is not minter','ENTRYPOINT_FAILED'))]
     fn test_not_minter() {
         let sys: TestSystems = tester::setup_world(FLAGS::NONE);
         // direct contract minting is not possible
