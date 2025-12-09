@@ -15,4 +15,4 @@ pushd $(dirname "$0")/..
 
 # sozo execute --world <WORLD_ADDRESS> <CONTRACT> <ENTRYPOINT>
 echo "> minting to: $RECIPIENT_ADDRESS"
-echo sozo -P $PROFILE execute aster-minter --world $WORLD_ADDRESS --wait mint_to $RECIPIENT_ADDRESS
+sozo -P $PROFILE execute aster-minter --world $WORLD_ADDRESS --wait mint_to $RECIPIENT_ADDRESS

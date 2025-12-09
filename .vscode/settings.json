@@ -1,4 +1,7 @@
 {
+  "files.readonlyInclude": {
+    "**/tokens/*": true,
+  },
   "files.exclude": {
     "**/node_modules": true,
     "**/build": true,

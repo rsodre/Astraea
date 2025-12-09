@@ -7,11 +7,16 @@
   "scripts": {
     "encode-images": "node ./bin/encode-images.js",
     "encode-defs": "node ./bin/encode-defs.js",
-    "encode-test": "node ./bin/encode-test.js"
+    "encode-test": "node ./bin/encode-test.js",
+    "fetch-tokens": "node ./bin/fetchTokens.js"
   },
   "keywords": [],
   "author": "",
   "packageManager": "pnpm@10.10.0",
   "dependencies": {
+  },
+  "devDependencies": {
+    "dotenv": "^16.5.0",
+    "starknet": "^8.1.2"
   }
 }
