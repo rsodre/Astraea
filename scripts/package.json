@@ -8,7 +8,8 @@
     "encode-images": "node ./bin/encode-images.js",
     "encode-defs": "node ./bin/encode-defs.js",
     "encode-test": "node ./bin/encode-test.js",
-    "fetch-tokens": "node ./bin/fetchTokens.js"
+    "fetch-tokens": "node ./bin/fetchTokens.js",
+    "verify-voyager": "./scripts/verifyVoyager.sh"
   },
   "keywords": [],
   "author": "",
