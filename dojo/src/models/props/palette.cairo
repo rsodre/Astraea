@@ -28,7 +28,7 @@ pub impl PaletteImpl of PaletteTrait {
             Palette::Palette3 => ".sh{filter:drop-shadow(1px 1px 2px #313B7380);}.bg{fill:#000010;}.p0{fill:#313B73;}.p1{fill:#485799;}.p2{fill:#707DBE;}.p3{fill:#ACB9F1;}.p4{fill:#C0E8FF;}.m0{fill:#3b2628;}.m1{fill:#783C1A;}.m2{fill:#BB873E;}.m3{fill:#E4AF4D;}",
             Palette::Palette4 => ".sh{filter:drop-shadow(1px 1px 2px #3C40BB80);}.bg{fill:#000010;}.p0{fill:#3C40BB;}.p1{fill:#4D5CFC;}.p2{fill:#2B00FF;}.p3{fill:#4E69FF;}.p4{fill:#AC9AFF;}.m0{fill:#3b2628;}.m1{fill:#9B442A;}.m2{fill:#E08442;}.m3{fill:#F3EA45;}",
             Palette::Palette5 => ".sh{filter:drop-shadow(1px 1px 2px #AD842B80);}.bg{fill:#101000;}.p0{fill:#AD842B;}.p1{fill:#F3C81B;}.p2{fill:#F0DC01;}.p3{fill:#FFF984;}.p4{fill:#FFFEE4;}.m0{fill:#3b2628;}.m1{fill:#9B442A;}.m2{fill:#E08442;}.m3{fill:#FBFFC9;}",
-            Palette::Palette6 => ".sh{filter:drop-shadow(1px 1px 2px #6a0e0380);}.bg{fill:#101000;}.p0{fill:#6a0e03;}.p1{fill:#CA0F0F;}.p2{fill:#FF0000;}.p3{fill:#FF2E2E;}.p4{fill:#FFB886;}.m0{fill:#72402F;}.m1{fill:#CD882F;}.m2{fill:#FCBB42;}.m3{fill:#FDF59A;}",
+            Palette::Palette6 => ".sh{filter:drop-shadow(1px 1px 2px #6a0e0380);}.bg{fill:#101000;}.p0{fill:#6A0303;}.p1{fill:#CA1B0F;}.p2{fill:#FF2A00;}.p3{fill:#FF892E;}.p4{fill:#FFB339;}.m0{fill:#72402F;}.m1{fill:#CD882F;}.m2{fill:#FCBB42;}.m3{fill:#FDF59A;}",
         })
     }
     fn get_background_color(self: @Palette) -> ByteArray {
