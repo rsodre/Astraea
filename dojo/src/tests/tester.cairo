@@ -95,7 +95,10 @@ pub mod tester {
             resources: resources.span(),
         };
 
-        let mut world: WorldStorage = spawn_test_world([namespace_def].span());
+        let mut world: WorldStorage = spawn_test_world(
+            dojo::world::world::TEST_CLASS_HASH,
+            [namespace_def].span(),
+        );
 
         let sys = TestSystems {
             world,

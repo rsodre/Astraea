@@ -58,3 +58,9 @@ default = "aster"
 "aster-token" = [
   "0x020dD2C29473df564F9735B7c16063Eb3B7A4A3bd70a7986526636Fe33E8227d", # treasury_address
 ]
+
+#--------------------------
+# migration options
+#
+[migration]
+manifest_abi_format = "per_contract"
