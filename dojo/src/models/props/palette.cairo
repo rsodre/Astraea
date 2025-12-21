@@ -31,6 +31,17 @@ pub impl PaletteImpl of PaletteTrait {
             Palette::Palette6 => ".sh{filter:drop-shadow(1px 1px 2px #6a0e0380);}.bg{fill:#101000;}.p0{fill:#6a0e03;}.p1{fill:#CA0F0F;}.p2{fill:#FF0000;}.p3{fill:#FF2E2E;}.p4{fill:#FFB886;}.m0{fill:#72402F;}.m1{fill:#CD882F;}.m2{fill:#FCBB42;}.m3{fill:#FDF59A;}",
         })
     }
+    fn get_background_color(self: @Palette) -> ByteArray {
+        (match self {
+            Palette::None     => "000000",
+            Palette::Palette1 => "100010",
+            Palette::Palette2 => "100010",
+            Palette::Palette3 => "000010",
+            Palette::Palette4 => "000010",
+            Palette::Palette5 => "101000",
+            Palette::Palette6 => "101000",
+        })
+    }
 }
 
 

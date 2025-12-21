@@ -122,6 +122,7 @@ pub mod token {
     // use aster::models::token_config::{TokenConfig, TokenConfigTrait};
     use aster::models::seed::{Seed, SeedTrait};
     use aster::models::props::props::{AsterProps, AsterPropsTrait};
+    use aster::models::props::palette::{PaletteTrait};
     use aster::systems::renderer::{AsterRendererTrait};
     use aster::libs::store::{Store, StoreTrait};
     use aster::libs::dns::{DnsTrait, SELECTORS};
@@ -247,14 +248,15 @@ pub mod token {
     pub impl ERC721ComboHooksImpl of ERC721ComboComponent::ERC721ComboHooksTrait<ContractState> {
         fn render_contract_uri(self: @ERC721ComboComponent::ComponentState<ContractState>) -> Option<ContractMetadata> {
             // https://docs.opensea.io/docs/contract-level-metadata
-            let metadata = ContractMetadata {
+            let metadata: ContractMetadata = ContractMetadata {
                 name: self.name(),
                 symbol: self.symbol(),
                 description: constants::METADATA_DESCRIPTION(),
+                external_link: Option::Some(constants::EXTERNAL_LINK()),
+                background_color: Option::Some(constants::CONTRACT_COLOR()),
                 image: Option::Some(constants::CONTRACT_IMAGE()),
                 banner_image: Option::Some(constants::BANNER_IMAGE()),
                 featured_image: Option::None,
-                external_link: Option::Some(constants::EXTERNAL_LINK()),
                 collaborators: Option::None,
             };
             (Option::Some(metadata))
@@ -269,14 +271,14 @@ pub mod token {
             let svg: ByteArray = AsterRendererTrait::render_svg(ref props);
             // return the metadata to be rendered by the component
             // https://docs.opensea.io/docs/metadata-standards#metadata-structure
-            let metadata = TokenMetadata {
+            let metadata: TokenMetadata = TokenMetadata {
                 token_id,
                 name: format!("Aster #{}", token_id.low),
                 description: constants::METADATA_DESCRIPTION(),
                 image: Option::Some(EncoderTrait::encode_svg(svg, true)),
                 image_data: Option::None,
                 external_url: Option::Some(constants::EXTERNAL_LINK()), // TODO: format external token link
-                background_color: Option::Some("000000"),
+                background_color: Option::Some(props.palette.get_background_color()),
                 animation_url: Option::None,
                 youtube_url: Option::None,
                 attributes: Option::Some(props.attributes),
